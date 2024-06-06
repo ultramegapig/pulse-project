@@ -1,6 +1,7 @@
-import './styles/all.scss';
+import '../src/styles/all.scss';
 import Calendar from './images/calendar.svg';
 import React, { useState, lazy, Suspense } from 'react';
+import TestShortCard from './components/TestShortCard';
 
 const MainPage = lazy(() => import('./areas/MainPage'));
 const Table = lazy(() => import('./areas/Table'));
@@ -74,19 +75,15 @@ const App: React.FC = () => {
             <img src={Calendar} alt="" />
             <div>успеваемость</div>
           </div>
-          <div 
-            className={`sideBarElement ${activeModule === 6 ? 'sideBarElement--active' : ''}`} 
-            onClick={() => handleClick(6)}>
-            <img src={Calendar} alt="" />
-            <div>номера барыг</div>
-          </div>
         </div>
 
         <div className="changingArea">
           <Suspense fallback={<div>Loading...</div>}>
-            <ActiveModule />
+            {/* <ActiveModule /> */}
+            <TestShortCard progressPercent={5} backroundColor={'#FFB800'} deadColor={'#A532D1'}/>
           </Suspense>
         </div>
+        
       </div>
     </div>
   );
