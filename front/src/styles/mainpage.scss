@@ -1,0 +1,25 @@
+.mainPageLeft {
+    width: 60%;
+    background-color: red;
+}
+
+.mainPageRight {
+    width: 40%;
+    background-color: blue;
+}
+
+.titleHead {
+    display: flex;
+    justify-content: space-between;
+}
+
+.testBlocksList {
+    display: flex;
+    justify-content: space-around;
+}
+
+.testBlock {
+    width: 30%;
+    background-color: lightblue;
+    height: 150px;
+}

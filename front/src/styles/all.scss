@@ -1,0 +1,75 @@
+$sideBarWidth: 20%;
+$areaPadding: $sideBarWidth/4;
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "Comfortaa", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 20px;
+}
+
+body {
+    background-color: #f4f4f4;
+    width: 100wh;
+}
+
+.header {
+    background-color: black;
+    width: 100wh;
+    height: 80px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    margin-bottom: 40px;
+}
+
+.rightHeader {
+    display: flex;
+}
+
+.userStuff {
+    margin-left: 30px;
+}
+
+.area {
+    width: 100%;
+    display: flex;
+}
+
+.mainArea {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.sideBar {
+    width: $sideBarWidth;
+}
+
+.changingArea {
+    width: 80%;
+    padding: 0 $areaPadding;
+}
+
+.sideBarElement {
+    margin: 0px 0 30px $sideBarWidth;
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    border-radius: 30px;
+}
+
+.sideBarElement > img {
+    margin-right: 15px;
+}
+
+.sideBarElement--active {
+    background-color: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
