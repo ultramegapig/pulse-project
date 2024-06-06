@@ -101,7 +101,18 @@ body {
 
 .shortTestBlock{
     display: flex;
-    flex-direction: row;
-    width: 120dvb;
+    flex-direction: column;
+    height: 45dvb;
     justify-content: space-between;
+    
+
+}
+
+.shortTestBlock h1{
+    font-size: 40pt;
+    
+}
+
+.shortTestBlock img{
+    height: 5dvb;
 }
