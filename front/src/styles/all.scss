@@ -98,3 +98,10 @@ body {
     margin-bottom: 3pt;
     color: white;
 }
+
+.shortTestBlock{
+    display: flex;
+    flex-direction: row;
+    width: 120dvb;
+    justify-content: space-between;
+}
