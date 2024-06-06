@@ -1,0 +1,19 @@
+@font-face {
+    font-family: 'bold';
+    src: url(../fonts/LTSuperior-Bold.otf);
+}
+
+@font-face {
+    font-family: 'medium';
+    src: url(../fonts/LTSuperior-Medium.otf);
+}
+
+@font-face {
+    font-family: 'regular';
+    src: url(../fonts/LTSuperior-Regular.otf);
+}
+
+@font-face {
+    font-family: 'semi-bold';
+    src: url(../fonts/LTSuperior-Semibold.otf);
+}
