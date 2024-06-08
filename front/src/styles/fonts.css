@@ -1,19 +1,19 @@
 @font-face {
     font-family: 'bold';
-    src: url(../fonts/LTSuperior-Bold.otf);
+    src: url(../fonts/Unageo-Bold.ttf);
 }
 
 @font-face {
     font-family: 'medium';
-    src: url(../fonts/LTSuperior-Medium.otf);
+    src: url(../fonts/Unageo-Medium.ttf);
 }
 
 @font-face {
     font-family: 'regular';
-    src: url(../fonts/LTSuperior-Regular.otf);
+    src: url(../fonts/Unageo-Regular.ttf);
 }
 
 @font-face {
     font-family: 'semi-bold';
-    src: url(../fonts/LTSuperior-Semibold.otf);
+    src: url(../fonts/Unageo-Semibold.ttf);
 }
