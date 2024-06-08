@@ -3,6 +3,7 @@ import './styles/fonts.css';
 import Calendar from './images/calendar.svg';
 import React, { useState, lazy, Suspense } from 'react';
 import ShortSchedule from './components/ShortSchedule';
+import MissedLectureCard from './components/MissedLectureCard';
 
 const MainPage = lazy(() => import('./areas/MainPage'));
 const Table = lazy(() => import('./areas/Table'));
@@ -81,7 +82,7 @@ const App: React.FC = () => {
         <div className="changingArea">
           <Suspense fallback={<div>Loading...</div>}>
             {/* <ActiveModule /> */}
-            <ShortSchedule/>
+            <MissedLectureCard />
           </Suspense>
         </div>
         
