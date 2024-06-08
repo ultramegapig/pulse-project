@@ -218,3 +218,56 @@ body {
     font-family: 'medium';
   }
   
+
+  .missedLecture{
+    display: flex;
+    flex-direction: column;
+    background-image: url('../images/lectureBack.svg');
+    height: 30dvb;
+    width: 55dvb;
+    background-size: cover; /* Позволяет изображению заполнить весь контейнер, сохраняя его пропорции */
+    background-position: center;
+    border-radius: 5dvb;
+    color: white;
+    align-items: start;
+    justify-content: space-between;
+    padding: 2dvb 5dvb;
+  }
+
+  .missedLecture h1{
+    margin-top: 5dvb;
+    font-family: 'bold';
+    font-size: 20pt;
+  }
+
+  .missedLecture-footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .missedLecture-footer p{
+    font-family: 'regular';
+  }
+
+  .missedLecture-footer-teacher{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+  }
+
+  .missedLecture-footer-teacher p{
+    margin-left: 2dvb;
+  }
+
+  .missedLecture-footer-teacher-img{
+    width: 5dvb; 
+    height: 5dvb;
+    border-radius: 50%; 
+    overflow: hidden; 
+    background-image: url('../images/siganov.png'); 
+    background-size: cover; 
+    background-position: center; 
+  }
