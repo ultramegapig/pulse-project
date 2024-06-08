@@ -1,0 +1,25 @@
+.courseslist {
+    display: flex;
+    flex-direction: column;
+}
+
+.blockofcourse {
+    margin-bottom: 40px;
+    background-color: lightblue;
+    height: 20vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; // Add this line to make position top work
+}
+
+.nameofcourse {
+    position: absolute; // Set the position to absolute
+    left: 40px;
+    top: 40px;
+}
+
+.blockofcourse > .arrowButton {
+    position: absolute;
+    right: 40px;
+}

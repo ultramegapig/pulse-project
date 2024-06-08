@@ -1,7 +1,8 @@
 import '../src/styles/all.scss';
 import './styles/fonts.css';
 import Calendar from './images/calendar.svg';
-import React, { useState, lazy, Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import ShortSchedule from './components/ShortSchedule';
 import MissedLectureCard from './components/MissedLectureCard';
 
@@ -11,84 +12,60 @@ const Courses = lazy(() => import('./areas/Courses'));
 const Tests = lazy(() => import('./areas/Tests'));
 const Progress = lazy(() => import('./areas/Progress'));
 const Numbers = lazy(() => import('./areas/Numbers'));
+const Podrobnosti = lazy(() => import('./areas/Podrobnosti'));
 
-const modules: { [key: number]: React.LazyExoticComponent<React.ComponentType<any>> } = {
-  1: MainPage,
-  2: Table,
-  3: Courses,
-  4: Tests,
-  5: Progress,
-  6: Numbers
+const modules: { [key: number]: { path: string; component: React.LazyExoticComponent<React.ComponentType<any>>; label: string } } = {
+  1: { path: '/', component: MainPage, label: 'главное' },
+  2: { path: '/table', component: Table, label: 'расписание' },
+  3: { path: '/courses', component: Courses, label: 'курсы' },
+  4: { path: '/tests', component: Tests, label: 'тесты' },
+  5: { path: '/progress', component: Progress, label: 'успеваемость' }
 };
 
 const App: React.FC = () => {
-  const [activeModule, setActiveModule] = useState<number>(1);
-  const ActiveModule = modules[activeModule];
-
-  const handleClick = (moduleId: number) => {
-    setActiveModule(moduleId);
-  };
-
   return (
-    <div className="App">
-      <header className="header">
-        <div className="logo">
-          logo
-        </div>
-        <div className="rightHeader">
-          <div className="notifications">
-            notification
+    <Router>
+      <div className="App">
+        <header className="header">
+          <div className="logo">
+            logo
           </div>
-          <div className="userStuff">
-            user
+          <div className="rightHeader">
+            <div className="notifications">
+              notification
+            </div>
+            <div className="userStuff">
+              user
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <div className="mainArea">
-        <div className="sideBar">
-          <div 
-            className={`sideBarElement ${activeModule === 1 ? 'sideBarElement--active' : ''}`} 
-            onClick={() => handleClick(1)}>
-            <img src={Calendar} alt="" />
-            <div>главная</div>
+        <div className="mainArea">
+          <div className="sideBar">
+            {Object.keys(modules).map((key) => (
+              <Link key={key} to={modules[parseInt(key)].path} className="sideBarElement">
+                <img src={Calendar} alt="" />
+                <div>{modules[parseInt(key)].label}</div>
+              </Link>
+            ))}
           </div>
-          <div 
-            className={`sideBarElement ${activeModule === 2 ? 'sideBarElement--active' : ''}`} 
-            onClick={() => handleClick(2)}>
-            <img src={Calendar} alt="" />
-            <div>расписание</div>
-          </div>
-          <div 
-            className={`sideBarElement ${activeModule === 3 ? 'sideBarElement--active' : ''}`} 
-            onClick={() => handleClick(3)}>
-            <img src={Calendar} alt="" />
-            <div>курсы</div>
-          </div>
-          <div 
-            className={`sideBarElement ${activeModule === 4 ? 'sideBarElement--active' : ''}`} 
-            onClick={() => handleClick(4)}>
-            <img src={Calendar} alt="" />
-            <div>тесты</div>
-          </div>
-          <div 
-            className={`sideBarElement ${activeModule === 5 ? 'sideBarElement--active' : ''}`} 
-            onClick={() => handleClick(5)}>
-            <img src={Calendar} alt="" />
-            <div>успеваемость</div>
-          </div>
-        </div>
 
-        <div className="changingArea">
-          <Suspense fallback={<div>Loading...</div>}>
-            {/* <ActiveModule /> */}
-            <MissedLectureCard />
-          </Suspense>
+          <div className="changingArea">
+            <Suspense fallback={<div>Loading...</div>}>
+              <Routes>
+                {Object.keys(modules).map((key) => (
+                  <Route key={key} path={modules[parseInt(key)].path} element={React.createElement(modules[parseInt(key)].component)} />
+                ))}
+                <Route path="/courses" element={<Courses />} />
+                <Route path="/podrobnosti/:id" element={<Podrobnosti />} />
+              </Routes>
+            </Suspense>
+          </div>
         </div>
-        
       </div>
-    </div>
+    </Router>
   );
 }
 
 export default App;
+
