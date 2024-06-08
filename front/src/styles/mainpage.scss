@@ -8,15 +8,22 @@
     background-color: blue;
 }
 
+.testComplete {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
 .titleHead {
     display: flex;
     justify-content: space-between;
 }
-
+ 
 .testBlocksList {
     display: flex;
     justify-content: space-around;
 }
+
 
 .testBlock {
     width: 30%;
