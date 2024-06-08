@@ -1,7 +1,10 @@
-import './styles/all.scss';
+import '../src/styles/all.scss';
+import './styles/fonts.css';
 import Calendar from './images/calendar.svg';
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import ShortSchedule from './components/ShortSchedule';
+import MissedLectureCard from './components/MissedLectureCard';
 
 const MainPage = lazy(() => import('./areas/MainPage'));
 const Table = lazy(() => import('./areas/Table'));
@@ -65,3 +68,4 @@ const App: React.FC = () => {
 }
 
 export default App;
+

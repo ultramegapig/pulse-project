@@ -1,0 +1,19 @@
+@font-face {
+    font-family: 'bold';
+    src: url(../fonts/Unageo-Bold.ttf);
+}
+
+@font-face {
+    font-family: 'medium';
+    src: url(../fonts/Unageo-Medium.ttf);
+}
+
+@font-face {
+    font-family: 'regular';
+    src: url(../fonts/Unageo-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'semi-bold';
+    src: url(../fonts/Unageo-Semibold.ttf);
+}

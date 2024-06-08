@@ -1,6 +1,7 @@
 $sideBarWidth: 20%;
 $areaPadding: $sideBarWidth/4;
 
+
 * {
     padding: 0;
     margin: 0;
@@ -64,9 +65,9 @@ body {
 .sideBarElement {
     margin: 0px 0 30px $sideBarWidth;
     display: flex;
-    padding: 20px;
+    padding: 15px;
     align-items: center;
-    border-radius: 30px;
+    border-radius: 20px;
 }
 
 .sideBarElement > img {
@@ -77,3 +78,201 @@ body {
     background-color: white;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
+
+.testShortCard{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 25dvb;
+    width: 30dvb;
+    border-radius: 15pt;
+    padding: 20pt;
+    font-size: 10pt;
+}
+
+.testShortCard h2{
+    color: white;
+    font-size: 20pt;
+    font-family: 'bold';
+}
+
+.testShortCard a{
+    width: 10pt;
+    font-size: 12pt ;
+    margin-bottom: 3pt;
+    color: white;
+}
+
+.shortTestBlock{
+    display: flex;
+    flex-direction: column;
+    height: 45dvb;
+    justify-content: space-between;
+    
+
+}
+
+.shortTestBlock h1{
+    font-size: 40pt;
+    
+}
+
+.shortTestBlock img{
+    height: 5dvb;
+}
+
+.shortSchedule{
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 3dvb;
+    padding: 2dvb;
+    padding-top: 3dvb;
+    width: 38dvb;
+    height: auto;
+}
+
+.shortSchedule-calendar-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5%;
+    
+}
+
+.shortSchedule-calendar-title h2{
+    font-family: 'bold';
+    font-size: 20pt;
+}
+
+.shortSchedule-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .shortSchedule-line {
+    width: 5px; /* Ширина линии */
+    background-color: #FFB800; /* Цвет линии */
+    border-radius: 2.5px; /* Радиус для закругления */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+  }
+  
+  .shortSchedule-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding-left: 20px; /* Отступ для содержимого от линии */
+    justify-content: space-between;
+  }
+
+  .shortSchedule-content h2{
+    font-family: 'medium';
+  }
+
+  .shortSchedule-content p{
+    opacity: 0.5;
+    margin-bottom: 2dvb;
+    font-family: 'regular';
+  }
+
+  .shortSchedule-calendar-arrows{
+    display: flex;
+    width: 20%;
+    justify-content: space-between;
+  }
+
+  .shortSchedule-calendar-arrows img{
+    height: 3dvb;
+  }
+
+
+  .weekDays {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10%;
+  }
+  
+  .dayContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin: 5px;
+    padding: 1.5dvb;
+  }
+  
+  .currentDay {
+    background-color: black; 
+    color: white;
+  }
+  
+  .dayName {
+    font-size: 14px;
+    font-family: 'regular';
+  }
+  
+  .dayNumber {
+    font-size: 18px;
+    margin-top: 10px;
+    font-family: 'medium';
+  }
+  
+
+  .missedLecture{
+    display: flex;
+    flex-direction: column;
+    background-image: url('../images/lectureBack.svg');
+    height: 30dvb;
+    width: 55dvb;
+    background-size: cover; /* Позволяет изображению заполнить весь контейнер, сохраняя его пропорции */
+    background-position: center;
+    border-radius: 5dvb;
+    color: white;
+    align-items: start;
+    justify-content: space-between;
+    padding: 2dvb 5dvb;
+    box-shadow: 0px 5px 20px rgba(165,50,209, 0.7), 
+  }
+
+  .missedLecture h1{
+    margin-top: 5dvb;
+    font-family: 'bold';
+    font-size: 20pt;
+  }
+
+  .missedLecture-footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .missedLecture-footer p{
+    font-family: 'regular';
+  }
+
+  .missedLecture-footer-teacher{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+  }
+
+  .missedLecture-footer-teacher p{
+    margin-left: 2dvb;
+  }
+
+  .missedLecture-footer-teacher-img{
+    width: 5dvb; 
+    height: 5dvb;
+    border-radius: 50%; 
+    overflow: hidden; 
+    background-image: url('../images/siganov.png'); 
+    background-size: cover; 
+    background-position: center; 
+  }
