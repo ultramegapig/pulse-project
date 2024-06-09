@@ -155,7 +155,6 @@ def get_schedule():
     current_user = get_jwt_identity()
     user_id = current_user['user_id']
     user = User.query.filter_by(user_id=user_id).first()
-    
     if not user:
         return jsonify({'message': 'User not found'}), 404
 
@@ -172,6 +171,7 @@ def get_schedule():
 
             for lecture in lectures:
                 if lecture.lecture_datetime > datetime.now():
+                    print(lecture)
                     schedule.append({
                         'course_name': course.course_name,
                         'lecture_name': lecture.lecture_name,
@@ -187,7 +187,7 @@ def get_schedule():
                         'course_name': course.course_name,
                         'test_name': test.name,
                         'test_end_date': test.end_date.isoformat(),
-                        'test_link': test.test_link,
+                        'test_link': f"{test.test_link}/?student_id={user_id}",
                         'teacher_name': f"{teacher.first_name} {teacher.last_name}",
                         'group': user.group.group_name
                     })
