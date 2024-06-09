@@ -38,8 +38,11 @@ class Course(db.Model):
     lecture_count = db.Column(db.Integer, nullable=True)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), nullable=True)
     teacher_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=True)
-    lectures = db.relationship('Lecture', backref='course', lazy=True)
-    tests = db.relationship('Test', backref='course', lazy=True)
+    def to_json(self):
+        return {
+            "course_id": self.course_id,
+            "course_name": self.course_name
+        }
 
 # Модель Лекции
 class Lecture(db.Model):
@@ -50,6 +53,16 @@ class Lecture(db.Model):
     additional_materials = db.Column(db.Text, nullable=True)
     lecture_datetime = db.Column(db.DateTime, nullable=False)
     lecture_link = db.Column(db.String(255), nullable=True)
+
+    def to_json(self):
+        return {
+            'lecture_id': self.lecture_id,
+            'lecture_name': self.lecture_name,
+            'course_id': self.course_id,
+            'additional_materials': self.additional_materials,
+            'lecture_datetime': self.lecture_datetime.isoformat(),
+            'lecture_link': self.lecture_link
+        }
 
 # Модель Теста
 class Test(db.Model):
