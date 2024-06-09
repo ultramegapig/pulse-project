@@ -7,6 +7,7 @@ import { AuthContext, AuthProvider } from './context/AuthContext';
 import ShortSchedule from './components/ShortSchedule';
 import MissedLectureCard from './components/MissedLectureCard';
 import Login from './components/Login';
+import CreateCourse from './areas/CreateCourse';
 
 const MainPage = lazy(() => import('./areas/MainPage'));
 const Table = lazy(() => import('./areas/Table'));
@@ -87,11 +88,12 @@ const AppContent: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </AuthProvider>
+    <CreateCourse/>
+    // <AuthProvider>
+    //   <Router>
+    //     <AppContent />
+    //   </Router>
+    // </AuthProvider>
   );
 };
 
