@@ -115,8 +115,6 @@ def get_groups():
 @jwt_required()
 def get_courses():
     current_user = get_jwt_identity()
-    if current_user['role'] != 'Преподаватель':
-        return jsonify({'message': 'Permission denied'}), 403
 
     courses = Course.query.all()
     course_list = [{'course_id': course.course_id, 'course_name': course.course_name, 'description': course.description, 'syllabus': course.syllabus, 'lecture_count': course.lecture_count, 'group_id': course.group_id, 'teacher_id': course.teacher_id} for course in courses]

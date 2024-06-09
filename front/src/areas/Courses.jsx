@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../components/AuthContext';
+import { AuthContext } from '../context/AuthContext';
 import '../styles/courses.scss';
 
 const Courses = () => {
@@ -10,15 +10,17 @@ const Courses = () => {
 
   useEffect(() => {
     const fetchCourses = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:5000/api/courses', {
-          headers: {
-            Authorization: `Bearer ${authState.token}`,
-          },
-        });
-        setCourses(response.data);
-      } catch (error) {
-        console.error('Error fetching courses:', error);
+      if (authState.token) {
+        try {
+          const response = await axios.get('http://127.0.0.1:5000/api/courses', {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
+          });
+          setCourses(response.data);
+        } catch (error) {
+          console.error('Error fetching courses:', error);
+        }
       }
     };
 
@@ -35,8 +37,7 @@ const Courses = () => {
             <div className="arrowButton">
               <Link
                 to={{
-                  pathname: `/podrobnosti/${course.course_id}`,
-                  search: `?subjectName=${course.course_name}`
+                  pathname: `/podrobnosti/${course.course_id}`
                 }}
               >
                 Details
