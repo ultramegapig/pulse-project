@@ -12,7 +12,7 @@ const Courses = () => {
     const fetchCourses = async () => {
       if (authState.token) {
         try {
-          const response = await axios.get('http://127.0.0.1:5000/api/courses', {
+          const response = await axios.get('http://127.0.0.1:5000/api/course/get_all', {
             headers: {
               Authorization: `Bearer ${authState.token}`,
             },

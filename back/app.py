@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from models import db, User, Course, Lecture, Test, TestResult, Group, generate_id
 
@@ -11,6 +11,7 @@ CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///online_lectures.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=1)
 
 db.init_app(app)
 jwt = JWTManager(app)
@@ -30,7 +31,7 @@ def register():
     return jsonify({'message': 'Registered successfully'}), 201
 
 # Вход
-@app.route('/api/login', methods=['POST'])
+@app.route('/api/user/login', methods=['POST'])
 def login():
     data = request.get_json()
     user = User.query.filter_by(email=data['email']).first()
@@ -47,13 +48,12 @@ def login():
     return make_response('Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
 
 # Добавление курсов (только администраторы)
-@app.route('/api/add_course', methods=['POST'])
+@app.route('/api/course/add', methods=['POST'])
 @jwt_required()
 def add_course():
     current_user = get_jwt_identity()
     if current_user['role'] != 'Преподаватель':
         return jsonify({'message': 'Permission denied'}), 403
-
     data = request.get_json()
     new_course = Course(course_id=generate_id(), course_name=data['course_name'], description=data['description'], syllabus=data['syllabus'], lecture_count=data['lecture_count'], group_id=data['group_id'], teacher_id=current_user['user_id'])
     db.session.add(new_course)
@@ -61,13 +61,12 @@ def add_course():
     return jsonify({'message': 'Course added successfully'}), 201
 
 # Добавление лекций (только преподаватели)
-@app.route('/api/lectures', methods=['POST'])
+@app.route('/api/lecture/add', methods=['POST'])
 @jwt_required()
 def add_lecture():
     current_user = get_jwt_identity()
     if current_user['role'] != 'Преподаватель':
         return jsonify({'message': 'Permission denied'}), 403
-
     data = request.get_json()
     lecture_datetime = datetime.fromisoformat(data['lecture_datetime'])
     new_lecture = Lecture(lecture_id=generate_id(), lecture_name=data['lecture_name'], course_id=data['course_id'], additional_materials=data['additional_materials'], lecture_datetime=lecture_datetime, lecture_link=data['lecture_link'])
@@ -76,7 +75,7 @@ def add_lecture():
     return jsonify({'message': 'Lecture added successfully'}), 201
 
 # Добавление тестов (только преподаватели)
-@app.route('/api/tests', methods=['POST'])
+@app.route('/api/test/add', methods=['POST'])
 @jwt_required()
 def add_test():
     current_user = get_jwt_identity()
@@ -90,7 +89,7 @@ def add_test():
     return jsonify({'message': 'Test added successfully'}), 201
 
 # Сбор результатов теста (обработка API запроса)
-@app.route('/api/test_results', methods=['POST'])
+@app.route('/api/test/results', methods=['POST'])
 def collect_test_results():
     data = request.get_json()
     new_result = TestResult(result_id=generate_id(), test_id=data['test_id'], user_id=data['user_id'], score=data['score'])
@@ -99,7 +98,7 @@ def collect_test_results():
     return jsonify({'message': 'Test result recorded successfully'}), 201
 
 # Список доступных групп (только преподаватели)
-@app.route('/api/groups', methods=['GET'])
+@app.route('/api/groups/get', methods=['GET'])
 @jwt_required()
 def get_groups():
     current_user = get_jwt_identity()
@@ -111,7 +110,7 @@ def get_groups():
     return jsonify(group_list), 200
 
 # Список доступных предметов (только преподаватели)
-@app.route('/api/courses', methods=['GET'])
+@app.route('/api/course/get_all', methods=['GET'])
 @jwt_required()
 def get_courses():
     current_user = get_jwt_identity()
@@ -122,7 +121,7 @@ def get_courses():
 
 
 # Список доступных лекций (только преподаватели)
-@app.route('/api/lectures', methods=['GET'])
+@app.route('/api/lectures/get_all', methods=['GET'])
 @jwt_required()
 def get_lectures():
     current_user = get_jwt_identity()
@@ -134,7 +133,7 @@ def get_lectures():
     return jsonify(lecture_list), 200
 
 # Список доступных лекций для курса (только студенты)
-@app.route('/api/course_lectures', methods=['POST'])
+@app.route('/api/lectures/by_course', methods=['POST'])
 @jwt_required()
 def get_course_lectures():
     current_user = get_jwt_identity()
@@ -148,7 +147,7 @@ def get_course_lectures():
     return jsonify(lecture_list), 200
 
 # Расписание
-@app.route('/api/schedule', methods=['GET'])
+@app.route('/api/get_schedule', methods=['GET'])
 @jwt_required()
 def get_schedule():
     current_user = get_jwt_identity()

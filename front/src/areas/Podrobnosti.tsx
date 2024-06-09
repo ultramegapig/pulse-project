@@ -5,13 +5,25 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
 interface BlockOfLessonProps {
-  lessonTitle: string;
+  lecture: {
+    lecture_name: string;
+    lecture_datetime: string;
+    lecture_link: string;
+    additional_materials: string;
+  };
 }
 
-function BlockOfLesson({ lessonTitle }: BlockOfLessonProps) {
+function BlockOfLesson({ lecture }: BlockOfLessonProps) {
   return (
     <div className="blockoflesson">
-      <span>{lessonTitle}</span>
+      <span>{lecture.lecture_name}</span>
+      <div>{new Date(lecture.lecture_datetime).toLocaleString()}</div>
+      <div>
+        <a href={lecture.lecture_link} target="_blank" rel="noopener noreferrer">Lecture Link</a>
+      </div>
+      <div>
+        <a href={lecture.additional_materials} target="_blank" rel="noopener noreferrer">Additional Materials</a>
+      </div>
     </div>
   );
 }
@@ -36,9 +48,8 @@ function useQuery() {
 
 function Podrobnosti() {
   let { id } = useParams();
-  const query = useQuery();
   const { authState } = useContext(AuthContext);
-  const [lessonTitles, setLessonTitles] = useState([]);
+  const [lectures, setLectures] = useState([]);
   const [testTitles, setTestTitles] = useState([]);
   const [subjectName, setSubjectName] = useState('');
 
@@ -46,7 +57,7 @@ function Podrobnosti() {
     async function fetchData() {
       try {
         const response = await axios.post(
-          'http://localhost:5000/api/course_lectures',
+          'http://localhost:5000/api/lectures/by_course',
           { course_id: id },
           {
             headers: {
@@ -54,10 +65,10 @@ function Podrobnosti() {
             },
           }
         );
-        const data = response.data;
-        setLessonTitles(data.lessons || []);
-        setTestTitles(data.tests || []);
-        setSubjectName(data.name || 'Unknown Subject');
+        console.log('Response data:', response.data); // Логирование данных для отладки
+        setLectures(response.data);
+        const query = new URLSearchParams(window.location.search);
+        setSubjectName(query.get('course_name') || 'Unknown Subject');
       } catch (error) {
         console.error('Error fetching course lectures:', error);
       }
@@ -67,15 +78,6 @@ function Podrobnosti() {
       fetchData();
     }
   }, [id, authState.token]);
-
-  useEffect(() => {
-    const subjectNameFromQuery = query.get('subjectName');
-    if (subjectNameFromQuery) {
-      setSubjectName(subjectNameFromQuery);
-    } else {
-      setSubjectName('Unknown Subject');
-    }
-  }, [query]);
 
   return (
     <div className="area areapodrobnosti">
@@ -87,7 +89,7 @@ function Podrobnosti() {
           <div>
             <span>{subjectName}</span>
             <div>
-              <div className="skolkopar">{lessonTitles.length} Lessons</div>
+              <div className="skolkopar">{lectures.length} Lessons</div>
               <div className="debilplan">Study Plan</div>
             </div>
           </div>
@@ -97,8 +99,8 @@ function Podrobnosti() {
 
       <div className="podrobbottom">
         <div className="podroblessons">
-          {lessonTitles.map((title, index) => (
-            <BlockOfLesson key={index} lessonTitle={title} />
+          {lectures.map((lecture, index) => (
+            <BlockOfLesson key={index} lecture={lecture} />
           ))}
         </div>
 
