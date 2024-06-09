@@ -88,12 +88,11 @@ const AppContent: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <CreateCourse/>
-    // <AuthProvider>
-    //   <Router>
-    //     <AppContent />
-    //   </Router>
-    // </AuthProvider>
+    <AuthProvider>
+      <Router>
+        <CreateCourse/>
+      </Router>
+    </AuthProvider>
   );
 };
 
