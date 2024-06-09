@@ -20,7 +20,7 @@ with app.app_context():
     db.create_all()
 
 # Регистрация
-@app.route('/api/register', methods=['POST'])
+@app.route('/api/user/register', methods=['POST'])
 def register():
     data = request.get_json()
     hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256', salt_length=8)
@@ -47,7 +47,7 @@ def login():
     return make_response('Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
 
 # Добавление курсов (только администраторы)
-@app.route('/api/courses', methods=['POST'])
+@app.route('/api/add_course', methods=['POST'])
 @jwt_required()
 def add_course():
     current_user = get_jwt_identity()
@@ -121,6 +121,7 @@ def get_courses():
     courses = Course.query.all()
     course_list = [{'course_id': course.course_id, 'course_name': course.course_name, 'description': course.description, 'syllabus': course.syllabus, 'lecture_count': course.lecture_count, 'group_id': course.group_id, 'teacher_id': course.teacher_id} for course in courses]
     return jsonify(course_list), 200
+
 
 # Список доступных лекций (только преподаватели)
 @app.route('/api/lectures', methods=['GET'])

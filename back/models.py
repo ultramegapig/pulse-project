@@ -38,6 +38,7 @@ class Course(db.Model):
     lecture_count = db.Column(db.Integer, nullable=True)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), nullable=True)
     teacher_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=True)
+    
     def to_json(self):
         return {
             "course_id": self.course_id,

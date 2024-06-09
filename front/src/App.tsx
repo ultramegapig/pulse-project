@@ -1,10 +1,12 @@
 import '../src/styles/all.scss';
 import './styles/fonts.css';
 import Calendar from './images/calendar.svg';
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { AuthContext, AuthProvider } from './context/AuthContext';
 import ShortSchedule from './components/ShortSchedule';
 import MissedLectureCard from './components/MissedLectureCard';
+import Login from './components/Login';
 
 const MainPage = lazy(() => import('./areas/MainPage'));
 const Table = lazy(() => import('./areas/Table'));
@@ -22,50 +24,75 @@ const modules: { [key: number]: { path: string; component: React.LazyExoticCompo
   5: { path: '/progress', component: Progress, label: 'успеваемость' }
 };
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
+  const { authState, setAuthState } = useContext(AuthContext);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    const user = localStorage.getItem('user');
+    if (token && user) {
+      setAuthState({
+        token,
+        user: JSON.parse(user),
+        isAuthenticated: true,
+      });
+    }
+  }, [setAuthState]);
+
+  if (!authState.isAuthenticated) {
+    return <Login />;
+  }
+
   return (
-    <Router>
-      <div className="App">
-        <header className="header">
-          <div className="logo">
-            logo
+    <div className="App">
+      <header className="header">
+        <div className="logo">
+          logo
+        </div>
+        <div className="rightHeader">
+          <div className="notifications">
+            notification
           </div>
-          <div className="rightHeader">
-            <div className="notifications">
-              notification
-            </div>
-            <div className="userStuff">
-              user
-            </div>
-          </div>
-        </header>
-
-        <div className="mainArea">
-          <div className="sideBar">
-            {Object.keys(modules).map((key) => (
-              <Link key={key} to={modules[parseInt(key)].path} className="sideBarElement">
-                <img src={Calendar} alt="" />
-                <div>{modules[parseInt(key)].label}</div>
-              </Link>
-            ))}
-          </div>
-
-          <div className="changingArea">
-            <Suspense fallback={<div>Loading...</div>}>
-              <Routes>
-                {Object.keys(modules).map((key) => (
-                  <Route key={key} path={modules[parseInt(key)].path} element={React.createElement(modules[parseInt(key)].component)} />
-                ))}
-                <Route path="/courses" element={<Courses />} />
-                <Route path="/podrobnosti/:id" element={<Podrobnosti />} />
-              </Routes>
-            </Suspense>
+          <div className="userStuff">
+            user
           </div>
         </div>
+      </header>
+
+      <div className="mainArea">
+        <div className="sideBar">
+          {Object.keys(modules).map((key) => (
+            <Link key={key} to={modules[parseInt(key)].path} className="sideBarElement">
+              <img src={Calendar} alt="" />
+              <div>{modules[parseInt(key)].label}</div>
+            </Link>
+          ))}
+        </div>
+
+        <div className="changingArea">
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              {Object.keys(modules).map((key) => (
+                <Route key={key} path={modules[parseInt(key)].path} element={React.createElement(modules[parseInt(key)].component)} />
+              ))}
+              <Route path="/courses" element={<Courses />} />
+              <Route path="/podrobnosti/:id" element={<Podrobnosti />} />
+            </Routes>
+          </Suspense>
+        </div>
       </div>
-    </Router>
+    </div>
   );
 }
 
-export default App;
+const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
+  );
+};
 
+export default App;
