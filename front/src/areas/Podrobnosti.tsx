@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import '../styles/podrobnosti.scss';
-import axios from 'axios'; 
-
+import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 
 interface BlockOfLessonProps {
   lessonTitle: string;
@@ -29,6 +29,7 @@ function BlockOfTest({ testTitles }: BlockOfTestProps) {
     </div>
   );
 }
+
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -36,6 +37,7 @@ function useQuery() {
 function Podrobnosti() {
   let { id } = useParams();
   const query = useQuery();
+  const { authState } = useContext(AuthContext);
   const [lessonTitles, setLessonTitles] = useState([]);
   const [testTitles, setTestTitles] = useState([]);
   const [subjectName, setSubjectName] = useState('');
@@ -43,20 +45,28 @@ function Podrobnosti() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(`http://127.0.0.1:5000/api/subject/${id}`); 
+        const response = await axios.post(
+          'http://localhost:5000/api/course_lectures',
+          { course_id: id },
+          {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
+          }
+        );
         const data = response.data;
         setLessonTitles(data.lessons || []);
         setTestTitles(data.tests || []);
         setSubjectName(data.name || 'Unknown Subject');
       } catch (error) {
-        console.error('Error fetching subject data:', error);
+        console.error('Error fetching course lectures:', error);
       }
     }
 
     if (id) {
       fetchData();
     }
-  }, [id]);
+  }, [id, authState.token]);
 
   useEffect(() => {
     const subjectNameFromQuery = query.get('subjectName');
