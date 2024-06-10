@@ -83,17 +83,19 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 25dvb;
-    width: 30dvb;
     border-radius: 15pt;
-    padding: 20pt;
+    padding: 15pt;
     font-size: 10pt;
+    width: 25dvh;
 }
 
 .testShortCard h2{
     color: white;
-    font-size: 20pt;
+    font-size: 15pt;
     font-family: 'bold';
+    margin-bottom: 5dvh;
+    width: 20dvh;
+    height: auto;
 }
 
 .testShortCard a{
@@ -275,4 +277,14 @@ body {
     background-image: url('../images/siganov.png'); 
     background-size: cover; 
     background-position: center; 
+  }
+
+  .testBlock{
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 5dvh;
+    justify-content: space-between;
+    background-color: red;
   }
