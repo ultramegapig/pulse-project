@@ -109,8 +109,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        {/* <AppContent /> */}
-        <TestsBlock testCardsData={testCardsData}/>
+        <AppContent/>
       </Router>
     </AuthProvider>
   );

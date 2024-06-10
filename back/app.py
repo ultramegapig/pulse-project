@@ -143,7 +143,14 @@ def get_course_lectures():
     data = request.get_json()
     course_id = data['course_id']
     lectures = Lecture.query.filter_by(course_id=course_id).all()
-    lecture_list = [{'lecture_id': lecture.lecture_id, 'lecture_name': lecture.lecture_name, 'course_id': lecture.course_id, 'additional_materials': lecture.additional_materials, 'lecture_datetime': lecture.lecture_datetime.isoformat(), 'lecture_link': lecture.lecture_link} for lecture in lectures]
+    lecture_list = [{
+        'lecture_id': lecture.lecture_id,
+        'lecture_name': lecture.lecture_name,
+        'course_id': lecture.course_id,
+        'additional_materials': lecture.additional_materials,
+        'lecture_datetime': lecture.lecture_datetime.isoformat(),
+        'lecture_link': lecture.lecture_link
+    } for lecture in lectures]
     return jsonify(lecture_list), 200
 
 # Расписание

@@ -5,21 +5,40 @@
 
 .blockofcourse {
     margin-bottom: 40px;
-    background-color: lightblue;
+    background:
+        linear-gradient(150deg, #ecedee, transparent 30%),
+        linear-gradient(330deg, rgb(210, 206, 242), transparent 30%),
+        linear-gradient(225deg, #fff0be, #fbdce7, #e2fae1, powderblue);
     height: 20vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative; // Add this line to make position top work
+    position: relative; 
+    border-radius: 40px;
+}
+
+.blockofcourse:nth-child(even) {
+    background: 
+        linear-gradient(150deg, #2c2e31, transparent 30%),
+        linear-gradient(330deg, #1a1338, transparent 30%),
+        linear-gradient(225deg, #5a3e23, #5a2633, #325239, #1c3545);
 }
 
 .nameofcourse {
-    position: absolute; // Set the position to absolute
+    position: absolute; 
     left: 40px;
     top: 40px;
+    color: black;
 }
 
-.blockofcourse > .arrowButton {
-    position: absolute;
-    right: 40px;
+.blockofcourse:nth-of-type(even) .nameofcourse {
+    color: white;
 }
+
+
+.title {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+
