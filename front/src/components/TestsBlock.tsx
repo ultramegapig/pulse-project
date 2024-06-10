@@ -15,17 +15,17 @@ interface TestsBlockProps {
 
 const TestsBlock: React.FC<TestsBlockProps> = ({ testCardsData }) => {
   return (
-    // <div className='testBlock'>
-    //   {testCardsData.map((cardData, index) => (
-    //     <TestShortCard
-    //           key={index}
-    //           testName={cardData.testName}
-    //           progressPercent={cardData.progressPercent}
-    //           deadColor={cardData.deadColor}
-    //           deadline={cardData.deadline} // Передаем дедлайн
-    //           backgroundColor={''}      />
-    //   ))}
-    // </div>
+    <div className='testBlock'>
+      {testCardsData.map((cardData, index) => (
+        <TestShortCard
+              key={index}
+              testName={cardData.testName}
+              progressPercent={cardData.progressPercent}
+              deadColor={cardData.deadColor}
+              deadline={cardData.deadline} // Передаем дедлайн
+              backgroundColor={''}      />
+      ))}
+    </div>
   );
 }
 

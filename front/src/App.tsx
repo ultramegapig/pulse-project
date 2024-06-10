@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { AuthContext, AuthProvider } from './context/AuthContext';
 import Login from './components/Login';
 import TestsBlock from './components/TestsBlock';
+import { Tab } from 'react-bootstrap';
 
 const MainPage = lazy(() => import('./areas/MainPage'));
 const Table = lazy(() => import('./areas/Table'));
@@ -109,7 +110,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <AppContent/>
+        <TestsBlock testCardsData={testCardsData}/>
       </Router>
     </AuthProvider>
   );
