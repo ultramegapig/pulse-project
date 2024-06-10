@@ -288,3 +288,130 @@ body {
     justify-content: space-between;
     background-color: red;
   }
+
+  .login {
+    display: flex;
+    justify-content: center; /* Центрируем по горизонтали */
+    align-items: center; /* Центрируем по вертикали */
+    width: 100%;
+    height: 100vh; /* Используем высоту вьюпорта для полного экрана */
+    background: linear-gradient(135deg, #000000, #A532D1, #FFB800);
+  }
+  
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding: 40pt;
+    border-radius: 20pt; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Добавляем тень для лучшего визуального эффекта */
+  }
+  
+  .login-container h2 {
+    margin-bottom: 30pt;
+    font-family: 'bold';
+    font-size: 30pt;
+  }
+  
+  .login-container form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column; /* Размещаем метку и поле ввода вертикально */
+    width: 100dvh; /* Занимает всю ширину контейнера */
+    margin-bottom: 15pt; /* Добавляем отступ снизу */
+  }
+  
+  .form-group label {
+    margin-bottom: 10pt;
+    font-family: 'medium';
+    font-size: 18pt;
+  }
+  
+  .login-container input {
+    padding: 10pt; /* Добавляем внутренние отступы */
+    border-radius: 30pt; /* Скругленные углы */
+    box-sizing: border-box; /* Обеспечиваем учет внутренних отступов и границ */
+    border: none;
+    box-shadow: 0px 5px 20px rgba(165,50,209, 0.3);
+    font-family: 'regular';
+  }
+  
+  .login-container input::placeholder {
+    color: #888; /* Серый цвет текста заполнителя */
+  }
+
+  .remember-forgot-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* Размещаем элементы по краям */
+    align-items: center; /* Выравниваем по вертикали */
+  }
+  
+  .remember-me {
+    display: flex;
+    align-items: center;
+    margin: 10pt 0; /* Отступы между элементами */
+  }
+  
+  .remember-me input {
+    margin-right: 5px; /* Уменьшаем расстояние между чекбоксом и текстом */
+  }
+  
+  
+  .remember-me label {
+    font-family: 'regular';
+  }
+  
+  .login-container button {
+    width: 30vh; /* Кнопка занимает всю ширину контейнера */
+    padding: 10pt; /* Добавляем внутренние отступы */
+    margin: 10pt auto; /* Отступ сверху и снизу */
+    background-color: #A532D1; /* Цвет фона кнопки */
+    color: white; /* Цвет текста кнопки */
+    border: none; /* Убираем границу */
+    border-radius: 30pt; /* Скругленные углы */
+    cursor: pointer; /* Указатель мыши при наведении */
+    font-family: 'bold';
+  }
+  
+  .login-container button:hover {
+    background-color: #8b28b1; /* Темнее цвет кнопки при наведении */
+  }
+  
+  .forgot-password {
+    color: #A532D1; /* Цвет текста */
+  text-decoration: none; /* Убираем подчеркивание */
+  font-family: 'regular';
+  }
+  
+  .forgot-password:hover {
+    text-decoration: underline; /* Добавляем подчеркивание при наведении */
+  }
+  
+  .form-registration{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .form-registration p{
+    margin-right: 1vh;
+    font-family: 'regular';
+  }
+
+  .form-registration a {
+    color: #A532D1; /* Цвет текста */
+    text-decoration: none; /* Убираем подчеркивание */
+    font-family: 'regular';
+  }
+  
+  
+  
+
+  

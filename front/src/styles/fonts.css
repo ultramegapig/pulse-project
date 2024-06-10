@@ -1,19 +1,19 @@
 @font-face {
     font-family: 'bold';
-    src: url(../fonts/Unageo-Bold.ttf);
+    src: url(../fonts/ZenMaruGothic-Bold.ttf);
 }
 
 @font-face {
     font-family: 'medium';
-    src: url(../fonts/Unageo-Medium.ttf);
+    src: url(../fonts/ZenMaruGothic-Medium.ttf);
 }
 
 @font-face {
     font-family: 'regular';
-    src: url(../fonts/Unageo-Regular.ttf);
+    src: url(../fonts/ZenMaruGothic-Regular.ttf);
 }
 
 @font-face {
-    font-family: 'semi-bold';
-    src: url(../fonts/Unageo-Semibold.ttf);
+    font-family: 'semi-light';
+    src: url(../fonts/ZenMaruGothic-Light.ttf);
 }

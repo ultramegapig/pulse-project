@@ -60,9 +60,9 @@ const AppContent: React.FC = () => {
     }
   }, [setAuthState]);
 
-  // if (!authState.isAuthenticated) {
-  //   return <Login />;
-  // }
+  if (!authState.isAuthenticated) {
+    return <Login />;
+  }
 
   return (
     <div className="App">
@@ -110,7 +110,11 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
+<<<<<<< HEAD
         <TestsBlock testCardsData={testCardsData}/>
+=======
+        <Login/>
+>>>>>>> 84796983 (css fot login)
       </Router>
     </AuthProvider>
   );
