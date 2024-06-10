@@ -5,11 +5,11 @@ interface TestShortCardProps {
   testName: string;
   progressPercent: number; 
   backgroundColor: string;
-  deadColor?: string; // Сделаем deadColor необязательным полем
+  deadColor: string;
   deadline: string;
 }
 
-const TestShortCard: React.FC<TestShortCardProps> = ({ testName, progressPercent, backgroundColor, deadColor = '#FFB800', deadline }) => {
+const TestShortCard: React.FC<TestShortCardProps> = ({ testName, progressPercent, backgroundColor, deadColor, deadline }) => {
   const calculateDaysLeft = (): number => {
     const difference = +new Date(deadline) - +new Date();
     return difference > 0 ? Math.floor(difference / (1000 * 60 * 60 * 24)) : 0;
@@ -34,16 +34,12 @@ const TestShortCard: React.FC<TestShortCardProps> = ({ testName, progressPercent
     }
   };
 
-  const getDeadColor = (): string => {
-    return backgroundColor === 'black' ? '#FFB800' : deadColor;
-  };
-
   return (
     <div className='testShortCard' style={{ backgroundColor: getBackgroundColor() }}>
       <h2>{testName}</h2>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {progressPercent === 0 && (
-          <a style={{ color: getDeadColor() }}>
+          <a style={{ color: deadColor }}>
             Дней до окончания: {daysLeft > 0 ? `${daysLeft}` : <span>Тест закрыт</span>}
           </a>
         )}

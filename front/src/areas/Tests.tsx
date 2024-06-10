@@ -24,7 +24,7 @@ const testCardsData = [
 
 function Tests() {
   return (
-    <TestsBlock testCardsData={testCardsData}/>
+    <TestsBlock testCardsData={testCardsData} />
   )
 }
 
