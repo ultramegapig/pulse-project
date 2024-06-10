@@ -348,21 +348,7 @@ def add_test():
         return jsonify({'message': 'Permission denied'}), 403
 
     data = request.get_json()
-<<<<<<< HEAD
     errors = []
-=======
-    course_id = data['course_id']
-    lectures = Lecture.query.filter_by(course_id=course_id).all()
-    lecture_list = [{
-        'lecture_id': lecture.lecture_id,
-        'lecture_name': lecture.lecture_name,
-        'course_id': lecture.course_id,
-        'additional_materials': lecture.additional_materials,
-        'lecture_datetime': lecture.lecture_datetime.isoformat(),
-        'lecture_link': lecture.lecture_link
-    } for lecture in lectures]
-    return jsonify(lecture_list), 200
->>>>>>> 40f6c9f2652ea1485b6b82bbe1fb6b7dd2e43863
 
     end_date = datetime.fromisoformat(data['end_date']).date()
     if end_date < datetime.now().date():
