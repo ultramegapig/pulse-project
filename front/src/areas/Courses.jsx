@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/courses.scss';
+import '../styles/podrobnosti.scss'
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -33,17 +34,13 @@ const Courses = () => {
       <div className="courseslist">
         {courses.map((course, index) => (
           <div key={index} className="blockofcourse">
-            <div className="nameofcourse">{course.course_name}</div>
-            <div className="arrowButton">
-              <Link
-                to={{
-                  pathname: `/podrobnosti/${course.course_id}`
-                }}
-              >
-                Details
-              </Link>
-            </div>
+          <div className="nameofcourse">{course.course_name}</div>
+          <div className="arrow-container">
+            <Link to={`/podrobnosti/${course.course_id}`} className="arrow-button">
+              <span className="arrow"></span>
+            </Link>
           </div>
+        </div>
         ))}
       </div>
     </div>

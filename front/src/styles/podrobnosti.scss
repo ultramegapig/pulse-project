@@ -1,11 +1,12 @@
 .areapodrobnosti {
     display: flex;
+    width: 100%;
     flex-direction: column;
+    justify-content: space-between;
 }
 
 .podrobtop {
     display: flex;
-    width: 100%;
     margin-bottom: 80px;
 }
 
@@ -16,27 +17,186 @@
 
 }
 
+
+.lecturelinks {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 50%;
+}
+
+.lecturelinks div a {
+    text-decoration: none;
+    color: black;
+    font-size: 15px;
+}
+
+.kek {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+
+
+.subjectName {
+    font-size: 40px;
+}
+
+.undersubname {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
 .podrobbottom {
     display: flex;
     width: 100%;
     justify-content: space-between;
 }
 
-.podroblessons {
-    width: 60%;
-    background-color: blue;
+.skolkopar {
+    color: black;
 }
 
-.podrobtests {
-    width: 35%;
-    background-color: red;
+.debilplan {
+    color: blueviolet;
+}
+
+.podroblessons {
+    width: 100%;
 }
 
 .blockoflesson {
     margin-bottom: 20px;
     height: 15vh;
-    background-color: gray;
+    background-color: white;
+    padding: 30px 50px;
+    border-radius: 40px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    padding-left: 40px;
+}
+
+.blockoflesson:nth-child(1) {
+    background-color: black;
+}
+
+.blockoflesson:nth-child(1) .kek span {
+    color: white;
+}
+
+.blockoflesson:nth-child(1) .kek span div span{
+    color: yellow;
+}
+
+.blockoflesson:nth-child(1) .kek .timeoflesson {
+    color: white;
+}
+
+.blockoflesson:nth-child(1) .lecturelinks div a {
+    color: white;
+}
+
+.blockoflesson span {
+    font-size: 25px;
+    position: ab;
+}
+
+.timeoflesson {
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+}
+
+.timeoflesson span {
+    font-size: 12px;
+    color: orange;
+}
+
+.podrobleft{
+    width: 60%;
+}
+
+
+
+.arrow-button {
+    display: flex;
+    color: #C2FFE9;
+    background-color: black;
+    padding: 20px 16px;
+    border-radius: 50%;
+    transition: all 1.3s ease;
+    font-weight: bold;
+    cursor: pointer;
+    align-items: center;
+    font-size: 14px;
+    transform: rotate(90);
+}
+
+.arrow-button > .arrow {
+    width: 6px;
+    height: 6px;
+    border-right: 2px solid #C2FFE9;
+    border-bottom: 2px solid #C2FFE9;
+    position: relative;
+    transform: rotate(135deg);
+    margin: 0 6px;
+    transition: all 1.3s ease;
+}
+
+.arrow-button > .arrow::before {
+    display: block;
+    background-color: currentColor;
+    width: 3px;
+    transform-origin: bottom right;
+    height: 2px;
+    position: absolute;
+    opacity: 0;
+    bottom: calc(-2px / 2);
+    transform: rotate(135deg);
+    transition: all 1.3s ease;
+    content: "";
+    right: 0;
+}
+
+
+
+.arrow-button:hover {
+    color: #fff;
+}
+
+.podrobright {
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(135deg, #000000, #5B006B, #F5C700);
+    border-radius: 40px;
+    padding: 80px 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.podrobtests {
+    width: 100%;
+}
+
+.oneoftests {
+    background: rgba(255, 255, 255, 0.1);
+    margin-bottom: 30px;
+    padding: 30px;
+    border-radius: 25px;
+}
+
+.oneoftests p {
+    color:  white;
+}
+
+.linkforalltest {
+    padding: 20px;
+    background-color: black;
+    margin: 50px auto 0;
+    border-radius: 30px;
+    color: white;
 }

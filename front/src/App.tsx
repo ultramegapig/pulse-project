@@ -4,10 +4,8 @@ import Calendar from './images/calendar.svg';
 import React, { lazy, Suspense, useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { AuthContext, AuthProvider } from './context/AuthContext';
-import ShortSchedule from './components/ShortSchedule';
-import MissedLectureCard from './components/MissedLectureCard';
 import Login from './components/Login';
-import CreateCourse from './areas/CreateCourse';
+import TestsBlock from './components/TestsBlock';
 
 const MainPage = lazy(() => import('./areas/MainPage'));
 const Table = lazy(() => import('./areas/Table'));
@@ -25,6 +23,27 @@ const modules: { [key: number]: { path: string; component: React.LazyExoticCompo
   5: { path: '/progress', component: Progress, label: 'успеваемость' }
 };
 
+const testCardsData = [
+  {
+    testName: 'Как делать куни болде',
+    progressPercent: 0, // Не начатый тест
+    deadColor: '#ff0000',
+    deadline: '2024-12-31T23:59:59' // Дедлайн
+  },
+  {
+    testName: 'Как варить борщ',
+    progressPercent: 75,
+    deadColor: '#0000ff',
+    deadline: '2024-07-15T18:00:00' // Дедлайн
+  },
+  {
+    testName: 'Как изучать React',
+    progressPercent: 90,
+    deadColor: '#00ff00',
+    deadline: '2024-08-01T12:00:00' // Дедлайн
+  }
+];
+
 const AppContent: React.FC = () => {
   const { authState, setAuthState } = useContext(AuthContext);
 
@@ -40,9 +59,9 @@ const AppContent: React.FC = () => {
     }
   }, [setAuthState]);
 
-  if (!authState.isAuthenticated) {
-    return <Login />;
-  }
+  // if (!authState.isAuthenticated) {
+  //   return <Login />;
+  // }
 
   return (
     <div className="App">
@@ -90,7 +109,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <CreateCourse/>
+        <AppContent/>
       </Router>
     </AuthProvider>
   );
