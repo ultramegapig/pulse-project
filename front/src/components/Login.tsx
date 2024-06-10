@@ -75,7 +75,7 @@ const Login: React.FC = () => {
         </form>
         <div className='form-registration'>
           <p>Нет аккаунта?</p>
-        <a href="/register" className="register-link">Зарегистрируйтесь</a>
+          <a href="/register" className="register-link">Зарегистрируйтесь</a>
         </div>
         {message && <p>{message}</p>}
       </div>

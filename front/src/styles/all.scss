@@ -86,23 +86,26 @@ body {
     border-radius: 15pt;
     padding: 15pt;
     font-size: 10pt;
-    width: 25dvh;
+    
 }
 
 .testShortCard h2{
     color: white;
     font-size: 15pt;
     font-family: 'bold';
-    margin-bottom: 5dvh;
+    margin-bottom: 3dvh;
     width: 20dvh;
     height: auto;
+    font-family: 'bold';
 }
 
 .testShortCard a{
-    width: 10pt;
+    width: 30dvh;
     font-size: 12pt ;
     margin-bottom: 3pt;
     color: white;
+    font-family: 'regular';
+    font-family: 'bold';
 }
 
 .shortTestBlock{
@@ -286,7 +289,12 @@ body {
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     border-radius: 5dvh;
     justify-content: space-between;
-    background-color: red;
+    
+    padding: 10pt 20pt;
+  }
+
+  .testBlock img{
+    margin-left: 25pt;
   }
 
   .login {

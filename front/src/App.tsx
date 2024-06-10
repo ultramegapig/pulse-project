@@ -28,7 +28,7 @@ const testCardsData = [
   {
     testName: 'Как делать куни болде',
     progressPercent: 0, // Не начатый тест
-    deadColor: '#ff0000',
+    deadColor: 'white',
     deadline: '2024-12-31T23:59:59' // Дедлайн
   },
   {
@@ -110,11 +110,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-<<<<<<< HEAD
-        <TestsBlock testCardsData={testCardsData}/>
-=======
-        <Login/>
->>>>>>> 84796983 (css fot login)
+        <TestsBlock testCardsData={testCardsData }/>
       </Router>
     </AuthProvider>
   );
