@@ -65,7 +65,7 @@ def register():
     otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(data['email'], issuer_name="Приложение Пульс")
     qr = qrcode.make(otp_uri)
     buffer = BytesIO()
-    qr.save(buffer, format="PNG")
+    qr.save(buffer)
     qr_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
     
     return jsonify({'message': 'Registered successfully', 'otp_secret': otp_secret, 'qr_code': qr_base64}), 201

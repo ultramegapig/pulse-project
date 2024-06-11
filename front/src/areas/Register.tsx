@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import QRCode from 'qrcode.react'; // Import QRCode library
 import '../styles/register.scss';
 
 interface Group {
@@ -22,11 +23,13 @@ const Register: React.FC = () => {
   const [groupId, setGroupId] = useState<string>("");
   const [groups, setGroups] = useState<Group[]>([]);
   const [message, setMessage] = useState("");
+  const [otpSecret, setOtpSecret] = useState("");
+  const [qrCode, setQrCode] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/api/groups/get");
+        const response = await axios.get<Group[]>("http://127.0.0.1:5000/api/groups/get");
         setGroups(response.data);
       } catch (error) {
         console.error("Error fetching groups:", error);
@@ -54,6 +57,8 @@ const Register: React.FC = () => {
         group_id: role === "Студент" ? groupId : undefined,
       });
       setMessage(response.data.message);
+      setOtpSecret(response.data.otp_secret); // Set the received OTP secret
+      setQrCode(response.data.qr_code); // Set the received QR code
     } catch (error) {
       setMessage("Registration failed. Please try again.");
       console.error(error);
@@ -64,6 +69,7 @@ const Register: React.FC = () => {
     <div className="register">
       <div className="register-content">
         <h2>Регистрация</h2>
+       
         <form onSubmit={handleRegister}>
           <div className="register-content-form-row">
             <div className="register-content-form-group">
@@ -154,11 +160,16 @@ const Register: React.FC = () => {
           </div>
           <button type="submit">Зарегистрироваться</button>
         </form>
-        <div className='register-content-form-login'>
-          <p>Уже есть аккаунт?</p>
-          <a href="/register" className="register-link">Войдите</a>
-        </div>
+
+        {/* Display QR code if available */}
+        {qrCode && (
+          <div className="qr-code">
+            <img src={`data:image/png;base64,${qrCode}`} alt="QR Code" />
+          </div>
+        )}
         {message && <p>{message}</p>}
+
+        <a href="/login">уже есть аккаунт?</a>
       </div>
     </div>
   );
