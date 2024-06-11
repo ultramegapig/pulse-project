@@ -444,6 +444,7 @@ def get_groups():
     group_list = [{'group_id': group.group_id, 'group_name': group.group_name} for group in groups]
     return jsonify(group_list), 200
 
+
 # Список доступных групп        [T]
 # Принимает: group_id
 # Отдаёт: group_id, group_name
@@ -485,8 +486,6 @@ def get_group():
     }), 200
 
 
-
-
 # Список доступных предметов    [T]
 # Принимает: 
 # Отдаёт: course_list {course_id, course_name, description, syllabus, lecture_count, group_id, teacher_id}
@@ -498,9 +497,90 @@ def get_courses():
     return jsonify(course_list), 200
 
 
+@app.route('/api/course/add', methods=['POST'])
+@jwt_required()
+def add_course():
+    current_user = get_jwt_identity()
+    if current_user['role'] != 'Преподаватель':
+        return jsonify({
+            "status": 403,
+            "message": "Permission denied",
+            "code": "Permission Denied"
+        }), 403
+
+    data = request.get_json()
+    errors = []
+
+    # Проверка имени курса
+    if not data.get('course_name'):
+        errors.append({
+            "name": "course_name",
+            "message": "Имя курса обязательно",
+            "type": "required"
+        })
+
+    # Проверка описания курса
+    if not data.get('description'):
+        errors.append({
+            "name": "description",
+            "message": "Описание курса обязательно",
+            "type": "required"
+        })
+
+    # Проверка учебного плана
+    syllabus = data.get('syllabus')
+    if not syllabus or not is_valid_url(syllabus):
+        errors.append({
+            "name": "syllabus",
+            "message": "Некорректная ссылка на учебный план. Это должен быть действительный URL.",
+            "type": "url"
+        })
+
+    # Проверка количества лекций
+    lecture_count = data.get('lecture_count')
+    if not lecture_count or not isinstance(lecture_count, int) or lecture_count < 1:
+        errors.append({
+            "name": "lecture_count",
+            "message": "Некорректное количество лекций. Это должно быть положительное целое число.",
+            "type": "integer"
+        })
+
+    # Проверка идентификатора группы
+    if not data.get('group_id'):
+        errors.append({
+            "name": "group_id",
+            "message": "Идентификатор группы обязателен",
+            "type": "required"
+        })
+
+    # Если есть ошибки, возвращаем их
+    if errors:
+        return jsonify({
+            "status": 400,
+            "message": "Creating error",
+            "code": "Bad Request",
+            "details": {
+                "createErrors": errors
+            }
+        }), 400
+
+    new_course = Course(
+        course_id=generate_id(),
+        course_name=data['course_name'],
+        description=data['description'],
+        syllabus=syllabus,
+        lecture_count=lecture_count,
+        group_id=data['group_id'],
+        teacher_id=current_user['user_id']
+    )
+    db.session.add(new_course)
+    db.session.commit()
+    return jsonify({'message': 'Course added successfully'}), 201
+
+
 # Получить инфо о курсе         [E]
 # Принимает: 
-# Отдаёт: course_list {course_id, course_name, description, syllabus, lecture_count, group_id, teacher_id}
+# Отдаёт: course_id, course_name, description, syllabus, lecture_count, group_id, teacher_id
 @app.route('/api/course/get', methods=['POST'])
 @jwt_required()
 def get_course():
