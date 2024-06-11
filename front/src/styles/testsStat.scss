@@ -1,0 +1,52 @@
+.tests-stat{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 60dvh;
+}
+
+.tests-stat h2{
+    margin-bottom: 10pt;
+    font-family: 'bold';
+    font-size: 20pt;
+}
+
+.tests-stat-completed > h2{
+    color: #A64AC9;
+}
+
+.tests-stat-best > h2{
+    color: #FFB800;
+}
+
+.tests-stat-worst > h2{
+    color: #000000;
+}
+
+.tests-stat p{
+    font-family: 'medium';
+}
+
+.tests-stat-completed,
+.tests-stat-best,
+.tests-stat-worst {
+    display: flex;
+    background-color: white;
+    border-radius: 10pt;
+    align-items: center;
+    flex-direction: column;
+    padding: 20pt;
+    
+}
+
+.tests-stat-completed{
+    box-shadow: 0px 5px 20px rgba(165,50,209, 0.7), 
+}
+
+.tests-stat-best{
+    box-shadow: 0px 5px 20px rgba(255,184,0, 0.7), 
+}
+
+.tests-stat-worst{
+    box-shadow: 0px 5px 20px rgba(37,5,24, 0.7), 
+}

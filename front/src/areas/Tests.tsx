@@ -1,7 +1,8 @@
 import React from 'react';
 
-import '../styles/all.scss';
+import '../styles/tests.scss';
 import CourseTestsBlock from '../components/CourseTestsBlock';
+import TestsStat from '../components/TestsStat';
 
 // Данные для нескольких блоков курсовых тестов
 const coursesData = [
@@ -56,7 +57,9 @@ const coursesData = [
 // Компонент для отображения всех курсовых тестов
 const Tests: React.FC = () => {
   return (
-    <div>
+    <div className='tests'>
+      
+      <div>
       {coursesData.map((course, index) => (
         <CourseTestsBlock 
           key={index}
@@ -64,6 +67,10 @@ const Tests: React.FC = () => {
           testCardsData={course.testCardsData}
         />
       ))}
+      </div>
+
+      <TestsStat completedResult={30} bestdResult={10} worstdResult={100}/>
+
     </div>
   );
 }
