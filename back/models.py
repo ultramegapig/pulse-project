@@ -16,7 +16,6 @@ class Group(db.Model):
     users = db.relationship('User', backref='group', lazy=True)
     courses = db.relationship('Course', backref='group', lazy=True)
 
-# Модель Пользователя
 class User(db.Model):
     __tablename__ = 'users'
     user_id = db.Column(db.Integer, primary_key=True, default=generate_id)
@@ -26,7 +25,10 @@ class User(db.Model):
     password_hash = db.Column(db.String(100), nullable=False)
     role = db.Column(db.String(20), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), nullable=True)
+    otp_secret = db.Column(db.String(32), nullable=True)  # Add this line
     __table_args__ = (CheckConstraint('role IN ("Студент", "Преподаватель")'),)
+    def __repr__(self):
+        return '<User %r>' % self.email
 
 # Модель Курса
 class Course(db.Model):

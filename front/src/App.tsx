@@ -25,26 +25,6 @@ const modules: { [key: number]: { path: string; component: React.LazyExoticCompo
   5: { path: '/progress', component: Progress, label: 'успеваемость' }
 };
 
-const testCardsData = [
-  {
-    testName: 'Как делать куни болде',
-    progressPercent: 0, // Не начатый тест
-    deadColor: 'white',
-    deadline: '2024-12-31T23:59:59' // Дедлайн
-  },
-  {
-    testName: 'Как варить борщ',
-    progressPercent: 75,
-    deadColor: '#0000ff',
-    deadline: '2024-07-15T18:00:00' // Дедлайн
-  },
-  {
-    testName: 'Как изучать React',
-    progressPercent: 90,
-    deadColor: '#00ff00',
-    deadline: '2024-08-01T12:00:00' // Дедлайн
-  }
-];
 
 const AppContent: React.FC = () => {
   const { authState, setAuthState } = useContext(AuthContext);
@@ -111,7 +91,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <Register/>
+        <AppContent/>
       </Router>
     </AuthProvider>
   );
