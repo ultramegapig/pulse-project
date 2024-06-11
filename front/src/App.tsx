@@ -10,6 +10,7 @@ import ActiveCalendar from './images/activeCalendarIcon.svg';
 import ActiveLectureIcon from './images/activeCourseIcon.svg';
 import ActiveTestsIcon from './images/activeTestsIcon.svg';
 import ActiveStatisticIcon from './images/activeStatisticIcon.svg';
+import YouTubePlayer from './components/YoutubePlayer';
 import React, { useState, lazy, Suspense, useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { AuthContext, AuthProvider } from './context/AuthContext';
