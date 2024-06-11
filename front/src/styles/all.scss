@@ -53,31 +53,14 @@ body {
     flex-wrap: nowrap;
 }
 
-.sideBar {
-    width: $sideBarWidth;
-}
+
 
 .changingArea {
     width: 80%;
     padding: 0 $areaPadding;
 }
 
-.sideBarElement {
-    margin: 0px 0 30px $sideBarWidth;
-    display: flex;
-    padding: 15px;
-    align-items: center;
-    border-radius: 20px;
-}
 
-.sideBarElement > img {
-    margin-right: 15px;
-}
-
-.sideBarElement--active {
-    background-color: white;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-}
 
 .testShortCard{
     display: flex;
