@@ -1,0 +1,50 @@
+.sideBar {
+  display: flex;
+  flex-direction: column;
+}
+
+.sideBarElement {
+  display: flex;
+  align-items: center;
+  padding: 15pt;
+  margin-bottom: 5px;
+  color: #6a1b9a; /* фиолетовый цвет для иконок и текста */
+  text-decoration: none;
+  border-radius: 10pt;
+  color: black;
+  align-items: center;
+}
+.sideBarElement img {
+  margin-right: 10pt;
+}
+
+.sidebar-icon{
+  height: 20vh;
+}
+
+.sideBar-text{
+  font-family: 'medium';
+  font-size: 18pt;
+}
+
+.sideBarElement:hover {
+  background-color: #e0e0e0; /* цвет при наведении */
+}
+
+.sideBarElement.activeshit {
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+
+}
+
+.sideBarElement.activeshit img {
+  color: black;
+}
+
+.sidebar-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  
+}
+
