@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
+import pyotp
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from datetime import datetime, timedelta
@@ -33,45 +34,82 @@ def is_valid_url(url):
 # Регистрация                   [A] (не трогаем, не доступна рядовому пользователю)
 # Принимает: first_name, password, last_name, email, role, group_id
 # Отдаёт:
+
+
+#похуй проебали
+#----------------------------------------------------------------------------------------------------------------------------------
 @app.route('/api/user/register', methods=['POST'])
 def register():
     data = request.get_json()
     hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256', salt_length=8)
-    new_user = User(user_id=generate_id(), first_name=data['first_name'], last_name=data['last_name'], email=data['email'], password_hash=hashed_password, role=data['role'], group_id=data.get('group_id'))
+    
+    # Generate OTP secret
+    otp_secret = pyotp.random_base32()
+    
+    new_user = User(
+        first_name=data['first_name'],
+        last_name=data['last_name'],
+        email=data['email'],
+        password_hash=hashed_password,
+        role=data['role'],
+        group_id=data.get('group_id'),
+        otp_secret=otp_secret
+    )
+    
     db.session.add(new_user)
     db.session.commit()
-    return jsonify({'message': 'Registered successfully'}), 201
+    
+    return jsonify({'message': 'Registered successfully', 'otp_secret': otp_secret}), 201
 
 
-# Логин                         [E] (возвращает `Invalid credentials` если неправильно ввели данные)
-# Принимает: email, password
-# Отдаёт: jwt_token
+# Modify Login Process to handle 2FA
 @app.route('/api/user/login', methods=['POST'])
 def login():
     data = request.get_json()
     user = User.query.filter_by(email=data['email']).first()
+    
     if not user or not check_password_hash(user.password_hash, data['password']):
-        return jsonify({
-            "status": 400,
-            "message": "Неправильный логин и/или пароль.",
-            "code": "Invalid credentials"
-        }), 400
+        return jsonify({"status": 400, "message": "Invalid credentials", "code": "Invalid credentials"}), 400
 
-    access_token = create_access_token(identity={
-        'user_id': user.user_id,
-        'first_name': user.first_name,
-        'last_name': user.last_name,
-        'email': user.email,
-        'role': user.role,
-        'group_id': user.group_id
-    })
+    if user.otp_secret:
+        # 2FA is enabled, prompt for OTP
+        return jsonify({"status": 200, "message": "2FA required.", "code": "2FA required"}), 200
+
+    # No 2FA required, generate access token
+    access_token = "dummy_access_token"
     return jsonify(access_token=access_token)
+
+# Route for verifying OTP token
+@app.route('/api/user/verify_2fa', methods=['POST'])
+def verify_2fa():
+    data = request.get_json()
+    user = User.query.filter_by(email=data['email']).first()
+    
+    if not user:
+        return jsonify({"status": 400, "message": "User not found", "code": "User not found"}), 400
+
+    otp_provided = data['otp']
+    otp_secret = user.otp_secret
+    totp = pyotp.TOTP(otp_secret)
+
+    expected_otp = totp.now()
+
+    print(f"Expected OTP: {expected_otp}, Provided OTP: {otp_provided}")  # Debugging: Print expected and provided OTP
+
+    if otp_provided != expected_otp:
+        return jsonify({"status": 400, "message": "Incorrect OTP", "code": "Incorrect OTP"}), 400
+
+    # OTP verified successfully, generate access token
+    access_token = "dummy_access_token"
+    return jsonify(access_token=access_token), 200
+#----------------------------------------------------------------------------------------------------------------------------------
+
+
 
 # Получить инфо о юзере         [E] (возвращает `Invalid credentials` если неправильно ввели данные)
 # Принимает: user_id
 # Отдаёт: user_id, first_name, last_name, role, group_id
 @app.route('/api/user/get', methods=['POST'])
-@jwt_required()
 def get_user_info():
     data = request.get_json()
     user_id = data.get('user_id')
@@ -439,6 +477,7 @@ def get_groups():
     group_list = [{'group_id': group.group_id, 'group_name': group.group_name} for group in groups]
     return jsonify(group_list), 200
 
+
 # Список доступных групп        [T]
 # Принимает: group_id
 # Отдаёт: group_id, group_name
@@ -480,8 +519,6 @@ def get_group():
     }), 200
 
 
-
-
 # Список доступных предметов    [T]
 # Принимает: 
 # Отдаёт: course_list {course_id, course_name, description, syllabus, lecture_count, group_id, teacher_id}
@@ -493,9 +530,90 @@ def get_courses():
     return jsonify(course_list), 200
 
 
+@app.route('/api/course/add', methods=['POST'])
+@jwt_required()
+def add_course():
+    current_user = get_jwt_identity()
+    if current_user['role'] != 'Преподаватель':
+        return jsonify({
+            "status": 403,
+            "message": "Permission denied",
+            "code": "Permission Denied"
+        }), 403
+
+    data = request.get_json()
+    errors = []
+
+    # Проверка имени курса
+    if not data.get('course_name'):
+        errors.append({
+            "name": "course_name",
+            "message": "Имя курса обязательно",
+            "type": "required"
+        })
+
+    # Проверка описания курса
+    if not data.get('description'):
+        errors.append({
+            "name": "description",
+            "message": "Описание курса обязательно",
+            "type": "required"
+        })
+
+    # Проверка учебного плана
+    syllabus = data.get('syllabus')
+    if not syllabus or not is_valid_url(syllabus):
+        errors.append({
+            "name": "syllabus",
+            "message": "Некорректная ссылка на учебный план. Это должен быть действительный URL.",
+            "type": "url"
+        })
+
+    # Проверка количества лекций
+    lecture_count = data.get('lecture_count')
+    if not lecture_count or not isinstance(lecture_count, int) or lecture_count < 1:
+        errors.append({
+            "name": "lecture_count",
+            "message": "Некорректное количество лекций. Это должно быть положительное целое число.",
+            "type": "integer"
+        })
+
+    # Проверка идентификатора группы
+    if not data.get('group_id'):
+        errors.append({
+            "name": "group_id",
+            "message": "Идентификатор группы обязателен",
+            "type": "required"
+        })
+
+    # Если есть ошибки, возвращаем их
+    if errors:
+        return jsonify({
+            "status": 400,
+            "message": "Creating error",
+            "code": "Bad Request",
+            "details": {
+                "createErrors": errors
+            }
+        }), 400
+
+    new_course = Course(
+        course_id=generate_id(),
+        course_name=data['course_name'],
+        description=data['description'],
+        syllabus=syllabus,
+        lecture_count=lecture_count,
+        group_id=data['group_id'],
+        teacher_id=current_user['user_id']
+    )
+    db.session.add(new_course)
+    db.session.commit()
+    return jsonify({'message': 'Course added successfully'}), 201
+
+
 # Получить инфо о курсе         [E]
 # Принимает: 
-# Отдаёт: course_list {course_id, course_name, description, syllabus, lecture_count, group_id, teacher_id}
+# Отдаёт: course_id, course_name, description, syllabus, lecture_count, group_id, teacher_id
 @app.route('/api/course/get', methods=['POST'])
 @jwt_required()
 def get_course():
