@@ -4,8 +4,7 @@ import Calendar from './images/calendar.svg';
 import React, { lazy, Suspense, useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { AuthContext, AuthProvider } from './context/AuthContext';
-import Login from './components/Login';
-import TestsBlock from './components/TestsBlock';
+import Login from './components/Login';   
 import { Tab } from 'react-bootstrap';
 import CourseTestsBlock from './components/CourseTestsBlock';
 
@@ -111,7 +110,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <CourseTestsBlock title={'Компьютерные сети'} testCardsData={testCardsData} />
+        <AppContent/>
       </Router>
     </AuthProvider>
   );
