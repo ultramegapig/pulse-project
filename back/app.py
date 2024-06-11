@@ -5,6 +5,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from datetime import datetime, timedelta
 from urllib.parse import urlparse
+import pyotp
+import base64
+import qrcode
+from io import BytesIO
+from flask import Flask, jsonify, request
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
 from models import db, User, Course, Lecture, Test, TestResult, Group, generate_id
 
@@ -31,22 +38,18 @@ def is_valid_url(url):
         return False
 
 
-# Регистрация                   [A] (не трогаем, не доступна рядовому пользователю)
+# Регистрация                   [E]
 # Принимает: first_name, password, last_name, email, role, group_id
-# Отдаёт:
-
-
-#похуй проебали
-#----------------------------------------------------------------------------------------------------------------------------------
+# Отдаёт: otp_secret, qr_code(base64)
 @app.route('/api/user/register', methods=['POST'])
 def register():
     data = request.get_json()
     hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256', salt_length=8)
     
-    # Generate OTP secret
     otp_secret = pyotp.random_base32()
     
     new_user = User(
+        user_id=generate_id(),
         first_name=data['first_name'],
         last_name=data['last_name'],
         email=data['email'],
@@ -59,51 +62,55 @@ def register():
     db.session.add(new_user)
     db.session.commit()
     
-    return jsonify({'message': 'Registered successfully', 'otp_secret': otp_secret}), 201
+    otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(data['email'], issuer_name="Приложение Пульс")
+    qr = qrcode.make(otp_uri)
+    buffer = BytesIO()
+    qr.save(buffer, format="PNG")
+    qr_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+    
+    return jsonify({'message': 'Registered successfully', 'otp_secret': otp_secret, 'qr_code': qr_base64}), 201
 
-
-# Modify Login Process to handle 2FA
+# Логин                         [E]
+# Принимает: email, password, otp
+# Отдает: jwt_token
 @app.route('/api/user/login', methods=['POST'])
 def login():
     data = request.get_json()
     user = User.query.filter_by(email=data['email']).first()
     
     if not user or not check_password_hash(user.password_hash, data['password']):
-        return jsonify({"status": 400, "message": "Invalid credentials", "code": "Invalid credentials"}), 400
+        return jsonify({
+            "status": 400, 
+            "message": "Invalid credentials", 
+            "code": "Invalid credentials"
+        }), 400
 
-    if user.otp_secret:
-        # 2FA is enabled, prompt for OTP
-        return jsonify({"status": 200, "message": "2FA required.", "code": "2FA required"}), 200
+    otp_provided = data.get('otp')
+    if user.otp_secret and otp_provided:
+        totp = pyotp.TOTP(user.otp_secret)
+        if not totp.verify(otp_provided):
+            return jsonify({
+                "status": 400,
+                "message": "Incorrect OTP",
+                "code": "Incorrect OTP"
+            }), 400
+    elif user.otp_secret:
+        return jsonify({
+            "status": 400,
+            "message": "2FA required",
+            "code": "2FA required"
+        }), 400
 
-    # No 2FA required, generate access token
-    access_token = "dummy_access_token"
-    return jsonify(access_token=access_token)
-
-# Route for verifying OTP token
-@app.route('/api/user/verify_2fa', methods=['POST'])
-def verify_2fa():
-    data = request.get_json()
-    user = User.query.filter_by(email=data['email']).first()
-    
-    if not user:
-        return jsonify({"status": 400, "message": "User not found", "code": "User not found"}), 400
-
-    otp_provided = data['otp']
-    otp_secret = user.otp_secret
-    totp = pyotp.TOTP(otp_secret)
-
-    expected_otp = totp.now()
-
-    print(f"Expected OTP: {expected_otp}, Provided OTP: {otp_provided}")  # Debugging: Print expected and provided OTP
-
-    if otp_provided != expected_otp:
-        return jsonify({"status": 400, "message": "Incorrect OTP", "code": "Incorrect OTP"}), 400
-
-    # OTP verified successfully, generate access token
-    access_token = "dummy_access_token"
+    # Generate access token
+    access_token = create_access_token(identity={
+        'user_id': user.user_id,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'email': user.email,
+        'role': user.role,
+        'group_id': user.group_id
+    })
     return jsonify(access_token=access_token), 200
-#----------------------------------------------------------------------------------------------------------------------------------
-
 
 
 # Получить инфо о юзере         [E] (возвращает `Invalid credentials` если неправильно ввели данные)
