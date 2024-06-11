@@ -8,6 +8,8 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [message, setMessage] = useState('');
+  const [otp, setOtp] = useState('');
+  const [isOtpRequired, setIsOtpRequired] = useState(false);
   const { setAuthState } = useContext(AuthContext);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -17,18 +19,49 @@ const Login: React.FC = () => {
         email,
         password,
       });
+
+      if (response.data.code === "2FA required") {
+        setIsOtpRequired(true);
+        setMessage('Требуется двухфакторная аутентификация. Введите OTP.');
+        return;
+      }
+
       const { access_token } = response.data;
       const decodedToken = JSON.parse(atob(access_token.split('.')[1]));
-      
+
       localStorage.setItem('accessToken', access_token);
       setAuthState({
         token: access_token,
         user: decodedToken,
         isAuthenticated: true,
       });
-      setMessage('Login successful!');
+      setMessage('Вход успешен!');
     } catch (error) {
-      setMessage('Login failed. Please check your credentials and try again.');
+      setMessage('Ошибка входа. Проверьте свои учетные данные и попробуйте снова.');
+    }
+  };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5000/api/user/verify_2fa', {
+        email,
+        otp,
+      });
+
+      const { access_token } = response.data;
+      const decodedToken = JSON.parse(atob(access_token.split('.')[1]));
+
+      localStorage.setItem('accessToken', access_token);
+      setAuthState({
+        token: access_token,
+        user: decodedToken,
+        isAuthenticated: true,
+      });
+      setMessage('Вход успешен!');
+      setIsOtpRequired(false);
+    } catch (error) {
+      setMessage('Ошибка верификации OTP. Проверьте OTP и попробуйте снова.');
     }
   };
 
@@ -36,43 +69,60 @@ const Login: React.FC = () => {
     <div className='login'>
       <div className="login-container">
         <h2>Вход</h2>
-        <form onSubmit={handleLogin}>
-          <div className="form-group">
-            <label htmlFor="email">E-mail</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Введите электронную почту"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Пароль</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Введите пароль"
-              required
-            />
-          </div>
-          <div className="remember-forgot-container">
-            <div className="remember-me">
+        {isOtpRequired ? (
+          <form onSubmit={handleVerifyOtp}>
+            <div className="form-group">
+              <label htmlFor="otp">OTP</label>
               <input
-                type="checkbox"
-                id="rememberMe"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
+                type="text"
+                id="otp"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                placeholder="Введите OTP"
+                required
               />
-              <label htmlFor="rememberMe">Запомнить меня</label>
             </div>
-            <a href="#" className="forgot-password">Забыли пароль?</a>
-          </div>
-          <button type="submit">Вход</button>
-        </form>
+            <button type="submit">Подтвердить OTP</button>
+          </form>
+        ) : (
+          <form onSubmit={handleLogin}>
+            <div className="form-group">
+              <label htmlFor="email">E-mail</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Введите электронную почту"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Пароль</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Введите пароль"
+                required
+              />
+            </div>
+            <div className="remember-forgot-container">
+              <div className="remember-me">
+                <input
+                  type="checkbox"
+                  id="rememberMe"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                />
+                <label htmlFor="rememberMe">Запомнить меня</label>
+              </div>
+              <a href="#" className="forgot-password">Забыли пароль?</a>
+            </div>
+            <button type="submit">Вход</button>
+          </form>
+        )}
         <div className='form-registration'>
           <p>Нет аккаунта?</p>
           <a href="/register" className="register-link">Зарегистрируйтесь</a>
