@@ -58,18 +58,22 @@ const coursesData = [
 const Tests: React.FC = () => {
   return (
     <div className='tests'>
-      
-      <div>
-      {coursesData.map((course, index) => (
-        <CourseTestsBlock 
-          key={index}
-          title={course.title}
-          testCardsData={course.testCardsData}
-        />
-      ))}
-      </div>
 
-      <TestsStat completedResult={30} bestdResult={10} worstdResult={100}/>
+      <h1>Тесты</h1>
+
+      <div className='tests-content'>
+        <div>
+        {coursesData.map((course, index) => (
+          <CourseTestsBlock 
+            key={index}
+            title={course.title}
+            testCardsData={course.testCardsData}
+          />
+        ))}
+        </div>
+
+        <TestsStat completedResult={30} bestdResult={10} worstdResult={100}/>
+        </div>
 
     </div>
   );
