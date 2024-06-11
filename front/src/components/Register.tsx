@@ -44,7 +44,7 @@ const Register: React.FC = () => {
         email: email,
         password: password,
         role: role,
-        group_id: groupId,
+        group_id: role === 'Преподаватель' ? null : groupId,
       });
       setMessage(response.data.message);
     } catch (error) {
@@ -108,21 +108,23 @@ const Register: React.FC = () => {
             ))}
           </select>
         </div>
-        <div>
-          <label htmlFor="groupId">Group ID:</label>
-          <select
-            id="groupId"
-            value={groupId}
-            onChange={(e) => setGroupId(e.target.value)}
-          >
-            <option value="">Select a group</option>
-            {groups.map((group) => (
-              <option key={group.group_id} value={group.group_id}>
-                {group.group_name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {role !== 'Преподаватель' && (
+          <div>
+            <label htmlFor="groupId">Group ID:</label>
+            <select
+              id="groupId"
+              value={groupId}
+              onChange={(e) => setGroupId(e.target.value)}
+            >
+              <option value="">Select a group</option>
+              {groups.map((group) => (
+                <option key={group.group_id} value={group.group_id}>
+                  {group.group_name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <button type="submit">Register</button>
       </form>
       {message && <p>{message}</p>}
