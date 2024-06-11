@@ -434,12 +434,7 @@ def get_test():
 # Принимает: 
 # Отдаёт: group_list {group_id, group_name}
 @app.route('/api/groups/get', methods=['GET'])
-@jwt_required()
 def get_groups():
-    current_user = get_jwt_identity()
-    if current_user['role'] != 'Преподаватель':
-        return jsonify({'message': 'Permission denied'}), 403
-
     groups = Group.query.all()
     group_list = [{'group_id': group.group_id, 'group_name': group.group_name} for group in groups]
     return jsonify(group_list), 200

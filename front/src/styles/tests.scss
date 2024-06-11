@@ -1,0 +1,11 @@
+.tests > h1{
+    font-family: 'bold';
+    font-size: 30pt;
+    margin-bottom: 30pt;
+}
+
+.tests-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
