@@ -7,7 +7,6 @@ import { AuthContext, AuthProvider } from './context/AuthContext';
 import Login from './components/Login';   
 import { Tab } from 'react-bootstrap';
 import CourseTestsBlock from './components/CourseTestsBlock';
-import TestsStat from './components/TestsStat';
 
 const MainPage = lazy(() => import('./areas/MainPage'));
 const Table = lazy(() => import('./areas/Table'));
@@ -111,7 +110,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <Tests/>
+        <AppContent/>
       </Router>
     </AuthProvider>
   );
