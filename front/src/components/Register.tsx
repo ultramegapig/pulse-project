@@ -6,22 +6,26 @@ interface Group {
   group_name: string;
 }
 
+const roles = [
+  { id: 'student', name: 'Студент' },
+  { id: 'teacher', name: 'Преподаватель' }
+];
+
 const Register: React.FC = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState<string>('');
   const [groupId, setGroupId] = useState<string>('');
   const [groups, setGroups] = useState<Group[]>([]);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    
     const fetchGroups = async () => {
       try {
         const response = await axios.get('http://127.0.0.1:5000/api/groups/get');
-        setGroups(response.data); // Adjust this if the response structure is different
+        setGroups(response.data);
       } catch (error) {
         console.error('Error fetching groups:', error);
       }
@@ -34,7 +38,7 @@ const Register: React.FC = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://127.0.0.1:5000//api/user/register', {
+      const response = await axios.post('http://127.0.0.1:5000/api/user/register', {
         first_name: firstName,
         last_name: lastName,
         email: email,
@@ -91,12 +95,18 @@ const Register: React.FC = () => {
         </div>
         <div>
           <label htmlFor="role">Role:</label>
-          <input
-            type="text"
+          <select
             id="role"
             value={role}
             onChange={(e) => setRole(e.target.value)}
-          />
+          >
+            <option value="">Select a role</option>
+            {roles.map((role) => (
+              <option key={role.id} value={role.name}>
+                {role.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label htmlFor="groupId">Group ID:</label>
