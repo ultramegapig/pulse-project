@@ -13,7 +13,7 @@ from flask import Flask, jsonify, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
-from models import db, User, Course, Lecture, Test, TestResult, Group, generate_id
+from models import db, User, Course, Lecture, Test, TestResult, Group, Metrics, generate_id
 
 app = Flask(__name__)
 CORS(app)
@@ -740,6 +740,41 @@ def get_schedule():
 
     else:
         return jsonify({'message': 'Permission denied'}), 403
+
+# Cбор метрик                   [E]
+# Принимает: user_id, test_id, lecture_id, action, value
+# Отдаёт: 
+@app.route('/api/metrics/gather', methods=['POST'])
+@jwt_required()
+def gather_metrics():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    test_id = data.get('test_id')
+    
+    if data.get('lecture_id'):
+        lecture_id = data.get('test_id')
+        
+    action = data.get('action')
+    value = data.get('value')
+
+    if not user_id or not action or not value:
+        return jsonify({
+            "status": 400,
+            "message": "Missing required fields",
+            "code": "Bad Request"
+        }), 400
+
+    new_metric = Metrics(
+        user_id=user_id,
+        # test_id=test_id,
+        lecture_id=lecture_id,
+        action=action,
+        value=value
+    )
+    db.session.add(new_metric)
+    db.session.commit()
+
+    return jsonify({'message': 'success'}), 201
 
 
 if __name__ == '__main__':

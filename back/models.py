@@ -1,7 +1,19 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import CheckConstraint
 import random
+from datetime import datetime
 
+db = SQLAlchemy()
+
+class Metrics(db.Model):
+    __tablename__ = 'metrics'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String, db.ForeignKey('users.user_id'), nullable=False)
+    test_id = db.Column(db.String, nullable=True)  # может быть пустым
+    lecture_id = db.Column(db.String, nullable=True)  # может быть пустым
+    action = db.Column(db.String, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    value = db.Column(db.String, nullable=False)  # хранит дополнительные данные в зависимости от действия
 db = SQLAlchemy()
 
 # Функция генерации уникального ID
@@ -86,3 +98,14 @@ class TestResult(db.Model):
     test_id = db.Column(db.Integer, db.ForeignKey('tests.test_id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     score = db.Column(db.Integer, nullable=False)
+
+# Таблица метрик
+class Metrics(db.Model):
+    __tablename__ = 'metrics'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String, db.ForeignKey('users.user_id'), nullable=False)
+    test_id = db.Column(db.String, nullable=True)  # может быть пустым
+    lecture_id = db.Column(db.String, nullable=True)  # может быть пустым
+    action = db.Column(db.String, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    value = db.Column(db.String, nullable=False)  # хранит дополнительные данные в зависимости от действия
