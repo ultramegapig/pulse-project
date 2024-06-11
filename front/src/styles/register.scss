@@ -1,0 +1,105 @@
+.register{
+    display: flex;
+    justify-content: center; /* Центрируем по горизонтали */
+    align-items: center; /* Центрируем по вертикали */
+    width: 100%;
+    height: 100vh; /* Используем высоту вьюпорта для полного экрана */
+    background: linear-gradient(135deg, #000000, #A532D1, #FFB800);
+    
+}
+
+.register-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding: 30pt;
+    border-radius: 20pt; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    
+}
+
+.register-content form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+.register-content > h2{
+    font-family: 'bold';
+    font-size: 30pt;
+    margin-bottom: 30pt;
+    
+}
+
+.register-content button{
+    width: 30vh; /* Кнопка занимает всю ширину контейнера */
+    padding: 10pt; /* Добавляем внутренние отступы */
+    margin: 10pt auto; /* Отступ сверху и снизу */
+    background-color: #A532D1; /* Цвет фона кнопки */
+    color: white; /* Цвет текста кнопки */
+    border: none; /* Убираем границу */
+    border-radius: 30pt; /* Скругленные углы */
+    cursor: pointer; /* Указатель мыши при наведении */
+    font-family: 'bold';
+}
+
+.register-content-form-row{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10pt;
+}
+
+.register-content-form-group{
+    display: flex;
+    flex-direction: column; /* Размещаем метку и поле ввода вертикально */
+    margin-bottom: 15pt; /* Добавляем отступ снизу */
+    
+    font-family: 'medium';
+}    
+
+.register-content-form-password{
+    display: flex;
+    flex-direction: column;
+}
+
+.register-content-form-group input{
+    border: none;
+    box-shadow: 0px 5px 20px rgba(165,50,209, 0.5);
+    border-radius: 30pt;
+    padding: 8pt;
+    font-family: 'regular';
+    
+}
+
+.register-content-form-group select{
+    border: none;
+    box-shadow: 0px 5px 20px rgba(165,50,209, 0.3);
+    border-radius: 30pt;
+    padding: 10pt;
+    font-family: 'regular';
+    
+}
+
+.register-content-form-group label{
+    font-family: 'medium';
+    font-size: 18pt;
+    margin-bottom: 5pt;
+}
+
+.register-content-form-login{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.register-content-form-login p{
+    margin-right: 1vh;
+    font-family: 'regular';
+  }
+
+  .register-content-form-login a {
+    color: #A532D1; /* Цвет текста */
+    text-decoration: none; /* Убираем подчеркивание */
+    font-family: 'regular';
+  }
