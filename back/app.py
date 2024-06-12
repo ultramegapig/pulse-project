@@ -229,29 +229,22 @@ def add_lecture():
 # Принимает: 
 # Отдаёт: lecture_list {lecture_id, lecture_name, course_id, additional_materials, lecture_datetime, lecture_link}
 @app.route('/api/lectures/by_course', methods=['POST'])
-@jwt_required()
 def get_course_lectures():
     data = request.get_json()
-    course_id = data.get('course_id')
-    errors = []
-
-    course = Course.query.filter_by(course_id=course_id).first()
-    if not course:
-        errors.append({
-            "name": "course_id",
-            "message": "Курса не существует",
-            "type": "id"
-        })
-
-    if errors:
+    if not data or 'course_id' not in data:
         return jsonify({
             "status": 400,
-            "message": "Creating error",
-            "code": "Bad Request",
-            "details": {
-                "createErrors": errors
-            }
+            "message": "Bad Request: course_id is missing"
         }), 400
+
+    course_id = data.get('course_id')
+    course = Course.query.filter_by(course_id=course_id).first()
+    if not course:
+        return jsonify({
+            "status": 400,
+            "message": "Bad Request: course does not exist"
+        }), 400
+
     teacher = User.query.filter_by(user_id=course.teacher_id).first()
     lectures = Lecture.query.filter_by(course_id=course_id).all()
 
@@ -267,8 +260,26 @@ def get_course_lectures():
         key=lambda x: x.lecture_datetime
     )
 
-    past_lecture_list = [{'lecture_id': lecture.lecture_id, 'lecture_name': lecture.lecture_name, 'course_id': lecture.course_id, 'additional_materials': lecture.additional_materials, 'lecture_link': lecture.lecture_link} for lecture in past_lectures]
-    upcoming_lecture_list = [{'lecture_id': lecture.lecture_id, 'lecture_name': lecture.lecture_name, 'course_id': lecture.course_id, 'additional_materials': lecture.additional_materials, 'lecture_datetime': lecture.lecture_datetime.isoformat(), 'lecture_link': lecture.lecture_link} for lecture in upcoming_lectures]
+    past_lecture_list = [
+        {
+            'lecture_id': lecture.lecture_id,
+            'lecture_name': lecture.lecture_name,
+            'course_id': lecture.course_id,
+            'additional_materials': lecture.additional_materials,
+            'lecture_link': lecture.lecture_link
+        } for lecture in past_lectures
+    ]
+
+    upcoming_lecture_list = [
+        {
+            'lecture_id': lecture.lecture_id,
+            'lecture_name': lecture.lecture_name,
+            'course_id': lecture.course_id,
+            'additional_materials': lecture.additional_materials,
+            'lecture_datetime': lecture.lecture_datetime.isoformat(),
+            'lecture_link': lecture.lecture_link
+        } for lecture in upcoming_lectures
+    ]
     
     return jsonify({
         'course_name': course.course_name,

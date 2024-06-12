@@ -23,10 +23,10 @@ function BlockOfLesson({ lecture }: BlockOfLessonProps) {
       </div>
       <div className="lecturelinks">
         <div>
-          <a href={lecture.lecture_link} target="_blank" rel="noopener noreferrer">Lecture Link</a>
+          <a href={lecture.lecture_link} target="_blank" rel="noopener noreferrer">лекция</a>
         </div>
         <div>
-          <a href={lecture.additional_materials} target="_blank" rel="noopener noreferrer">Additional Materials</a>
+          <a href={lecture.additional_materials} target="_blank" rel="noopener noreferrer">дополнительные материалы</a>
         </div>
       </div>
     </div>

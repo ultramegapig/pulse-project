@@ -10,22 +10,20 @@ import ActiveCalendar from './images/activeCalendarIcon.svg';
 import ActiveLectureIcon from './images/activeCourseIcon.svg';
 import ActiveTestsIcon from './images/activeTestsIcon.svg';
 import ActiveStatisticIcon from './images/activeStatisticIcon.svg';
-import YouTubePlayer from './components/YoutubePlayer';
 import React, { useState, lazy, Suspense, useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { AuthContext, AuthProvider } from './context/AuthContext';
 import './styles/sideBar.scss';
 import Login from './components/Login';
 import Register from './areas/Register';
-
+import YouTubePlayer from './components/YoutubePlayer';
 import CourseDescriptionPage from './areas/CourseDescriptionPage';
+
 
 import BarChart from './components/Barchart';
 import DonutChart from './components/Donutchart';
 import MainPageTeacher from './areas/MainPageTeacher';
 
-
-// Lazy load components
 const MainPage = lazy(() => import('./areas/MainPage'));
 const Table = lazy(() => import('./areas/Table'));
 const Courses = lazy(() => import('./areas/Courses'));
@@ -121,7 +119,7 @@ const AppContent: React.FC = () => {
                 <Route key={key} path={modules[parseInt(key)].path} element={React.createElement(modules[parseInt(key)].component)} />
               ))}
               <Route path="/courses" element={<Courses />} />
-              <Route path="/course/:id" element={<CourseDescriptionPage />} />
+              <Route path="/course/:course_id" element={<CourseDescriptionPage />} />
             </Routes>
           </Suspense>
         </div>
@@ -130,14 +128,14 @@ const AppContent: React.FC = () => {
   );
 };
 
-
-// Root app component
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        {/* <AppContent/> */}
-        <MainPageTeacher/>
+        <Routes>
+          <Route path="/video" element={<YouTubePlayer videoId={'kGyfI0PK1VE'} />} />
+          <Route path="/" element={<AppContent />} />
+        </Routes>
       </Router>
     </AuthProvider>
   );

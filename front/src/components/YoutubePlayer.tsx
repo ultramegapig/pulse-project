@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { AuthContext } from '../context/AuthContext';
+import '../styles/youtube.scss';
 
 declare global {
   interface Window {
@@ -10,7 +11,11 @@ declare global {
   }
 }
 
-const YouTubePlayer: React.FC = () => {
+interface YouTubePlayerProps {
+  videoId: string;
+}
+
+const YouTubePlayer: React.FC<YouTubePlayerProps> = ({ videoId }) => {
   const { authState } = useContext(AuthContext);
   const playerRef = useRef<HTMLDivElement | null>(null);
   const playerInstanceRef = useRef<any>(null);
@@ -86,7 +91,7 @@ const YouTubePlayer: React.FC = () => {
     window.onYouTubeIframeAPIReady = () => {
       console.log('YouTube IFrame API ready');
       playerInstanceRef.current = new window.YT.Player(playerRef.current, {
-        videoId: 'X47OO8rT9wc',
+        videoId: videoId,
         events: {
           onStateChange: handlePlayerStateChange,
           onVolumeChange: handlePlayerVolumeChange
@@ -109,7 +114,7 @@ const YouTubePlayer: React.FC = () => {
       }
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [authState.token]);
+  }, [authState.token, videoId]);
 
   return (
     <div className='video-container'>
