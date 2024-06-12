@@ -59,3 +59,61 @@
     font-size: 20pt;
     margin-bottom: 20pt;
 }
+
+.mainPageRight-statistic{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 20pt;
+    padding: 20pt;
+}
+
+.mainPageRight-statistic > .changeHeight > .bar-chart{
+    height: 20vh;
+    width: 50vh;
+    padding: 1% 1% 12%;
+    
+    .bar {
+        background-color: lightgray; /* Gray color for bars, you can change it */
+        width: 7%; /* Adjust width as needed */
+        margin-right: 10px; /* Adjust spacing between bars */
+        text-align: center;
+        color: white; /* Text color */
+        position: relative; /* Ensure the value is positioned correctly */
+        border-radius: 30px 30px 3px 3px;
+      }
+      
+      .current-day {
+        background-color: black; /* Highlight color for the current day */
+      }
+      
+      .underbar-info {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+      }
+      
+      .underbar-info > div {
+        display: flex;
+        flex-direction: column;
+        transform: translateY(120%);
+      }
+      
+      .underbar-info > div > span {
+        color: black; /* Text color for underbar info */
+      }
+      
+      .bar-label {
+        font-size: 20px; /* Font size for labels */
+        margin-bottom: 2px; /* Bottom margin for labels */
+      }
+}
+
+.mainPageRight-statistic-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

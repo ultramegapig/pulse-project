@@ -20,6 +20,8 @@ import CourseDescriptionPage from './areas/CourseDescriptionPage';
 
 import Notification from './images/notification.svg';
 import Logo from './images/logo.svg'
+import DonutChart from './components/Donutchart';
+import BarChart from './components/Barchart';
 
 
 // Lazy load components
@@ -131,11 +133,15 @@ const AppContent: React.FC = () => {
 // Root app component
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <BarChart data={chartData} />
-      <DonutChart successPercentage={successPercentage} />
-    </div>
-  );
-};
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<AppContent />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
+  )}
 
 export default App;

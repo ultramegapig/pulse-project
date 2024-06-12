@@ -4,6 +4,7 @@ import TestShortCard from "../components/TestShortCard";
 import ArrowRight from "../images/arrow-right.svg";
 import MissedLectureCard from "../components/MissedLectureCard";
 import ShortSchedule from "../components/ShortSchedule";
+import BarChart from "../components/Barchart";
 
 const cardsData = [
   {
@@ -61,6 +62,13 @@ function MainPage() {
       </div>
       <div className="mainPageRight">
         <ShortSchedule/>
+        <div className="mainPageRight-statistic">
+          <div className="mainPageRight-statistic-title">
+            <h2>Статистика</h2>
+            <img src={ArrowRight} alt="" />
+          </div>
+          <BarChart/>
+        </div>
       </div>
     </div>
   );
