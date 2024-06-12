@@ -18,6 +18,9 @@ import './styles/sideBar.scss';
 import Login from './components/Login';
 import Register from './areas/Register';
 
+import Notification from './images/notification.svg';
+import Logo from './images/logo.svg'
+
 import CourseDescriptionPage from './areas/CourseDescriptionPage';
 
 import BarChart from './components/Barchart';
@@ -88,10 +91,10 @@ const AppContent: React.FC = () => {
   return (
     <div className="App">
       <header className="header">
-        <div className="logo">logo</div>
+        <div className="logo"><img src={Logo} alt=''/></div>
         <div className="rightHeader">
-          <div className="notifications">notification</div>
-          <div className="userStuff">user</div>
+          <div className="notifications"><img src={Notification} alt=''/></div>
+          <div className="userStuff"></div>
         </div>
       </header>
 
