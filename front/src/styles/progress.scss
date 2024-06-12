@@ -1,146 +1,20 @@
-.area-progress {
+.progress {
     display: flex;
     flex-direction: column;
 }
 
-.menuwithlessonname {
-    display: flex;
-    flex-wrap: nowrap;
-    width: 100%;
-    justify-content: space-between;
-    height: 40vh;
+.progress > h1{
+    font-family: 'bold';
+    font-size: 30pt;
+    margin-bottom: 20pt;
 }
 
-.diagrams {
-    width: 50%;
-    background-color: white;
-    padding: 80px 40px;
-    border-radius: 20px;
-}
-
-.circlediagramlist {
-    background-color: gray;
-    width: 35%;
-    display: flex;
-    flex-direction: column;
-}
-
-.week-switcher {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 20px;
-
-    button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      border-radius: 5px;
-
-      &:hover {
-        background-color: #0056b3;
-      }
-    }
-}
-
-.diagrams {
-    canvas {
-      background-color: transparent;
-    }
-}
-
-.percentage-display {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 20px;
-    font-weight: bold;
-    color: #fff;
-  }
-
-.label {
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-}
-
-.blockoftestsresult {
-
-    margin: 0 auto 40px;
-}
-
-
-.title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-
-.title {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.week-switcher {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-
-    button {
-    background-color: #007bff;
-    color: white;
+.progress-change select{
     border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-
-    &:hover {
-        background-color: #0056b3;
-    }
-    }
-}
-
-.diagrams {
-    canvas {
-    background-color: transparent;
-    }
-}
-
-.circlediagram {
-width: 150px;
-height: 150px;
-position: relative;
-margin: auto;
-
-    canvas {
-    background-color: transparent;
-    }
-
-    .percentage-display {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 20px;
-    font-weight: bold;
-    color: #fff;
-    }
-
-    .label {
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    }
+    background-color: white;
+    padding: 10pt;
+    border-radius: 10pt;
+    color: #A64AC9;
+    font-family: 'medium';
+    font-size: 15pt;
 }

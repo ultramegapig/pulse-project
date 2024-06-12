@@ -136,8 +136,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        {/* <AppContent/> */}
-        <MainPageTeacher/>
+        <AppContent/>
       </Router>
     </AuthProvider>
   );
