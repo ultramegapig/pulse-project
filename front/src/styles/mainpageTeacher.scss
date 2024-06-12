@@ -1,0 +1,160 @@
+.mainteacher{
+    display: flex;
+    justify-content: space-between;
+}
+
+.mainteacherLeft {
+    width: 60%;
+    
+}
+
+.create-list {
+    display: flex; /* Расположить карточки горизонтально */
+    gap: 20pt; /* Промежуток между карточками */
+}
+
+.create-list-card {
+    position: relative; /* Установите контейнер как позиционированный элемент */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Выравнивание текста по верхнему краю */
+    align-items: flex-start; /* Выравнивание текста по левому краю */
+    padding: 2vh; /* Добавьте отступы для содержания */
+    height: 15vh; /* Установите высоту контейнера для демонстрации */
+    width: 20vh; /* Установите ширину контейнера */
+    border-radius: 15pt; /* Добавьте скругленные углы */
+}
+
+.create-list-card > h2 {
+    font-family: 'bold';
+    font-size: 20pt;
+    color: white;
+}
+
+.create-list-card button {
+    position: absolute; /* Абсолютное позиционирование кнопки */
+    bottom: 20px; /* Расположите кнопку 20px от нижнего края */
+    right: 20px; /* Расположите кнопку 20px от правого края */
+    border: none;
+    background-color: transparent; /* Сделайте фон кнопки прозрачным */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0; /* Уберите отступы внутри кнопки */
+}
+
+.create-list-card button img {
+    
+}
+
+
+
+.mainteacherRight {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.testComplete {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50pt;
+}
+
+.titleHead {
+    display: flex;
+    justify-content: space-between;
+}
+ 
+.testComplete-list {
+    display: flex;
+    
+}
+
+.testComplete-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10pt;
+}
+
+.testComplete-title > h1{
+    font-family: 'bold';
+    font-size: 30pt;
+}
+
+
+.testBlock {
+    
+    background-color: white;
+    height: 150px;
+}
+
+.testComplete-title button{
+    border: none;
+}
+
+.mainPageLeft-missed > h2{
+    font-family: 'bold';
+    font-size: 20pt;
+    margin-bottom: 20pt;
+}
+
+.mainPageRight-statistic{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 20pt;
+    padding: 20pt;
+}
+
+.mainPageRight-statistic > .changeHeight > .bar-chart{
+    height: 20vh;
+    width: 50vh;
+    padding: 1% 1% 12%;
+    
+    .bar {
+        background-color: lightgray; /* Gray color for bars, you can change it */
+        width: 8%; /* Adjust width as needed */
+        margin-right: 10px; /* Adjust spacing between bars */
+        text-align: center;
+        color: white; /* Text color */
+        position: relative; /* Ensure the value is positioned correctly */
+        border-radius: 25px 25px 3px 3px;
+      }
+      
+      .current-day {
+        background-color: black; /* Highlight color for the current day */
+      }
+      
+      .underbar-info {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+      }
+      
+      .underbar-info > div {
+        display: flex;
+        flex-direction: column;
+        transform: translateY(120%);
+      }
+      
+      .underbar-info > div > span {
+        color: black; /* Text color for underbar info */
+      }
+      
+      .bar-label {
+        font-size: 20px; /* Font size for labels */
+        margin-bottom: 2px; /* Bottom margin for labels */
+      }
+}
+
+.mainPageRight-statistic-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
