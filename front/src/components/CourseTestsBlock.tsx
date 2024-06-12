@@ -1,6 +1,5 @@
 import React from 'react';
 import TestShortCard from './TestShortCard';
-import '../styles/all.scss';
 import ArrowRight from '../images/arrow-right.svg';
 import '../styles/courseTestsBlock.scss';
 
@@ -30,7 +29,7 @@ const TestsBlock: React.FC<TestsBlockProps> = ({ testCardsData }) => {
               deadline={cardData.deadline} // Передаем дедлайн
               backgroundColor={''}      />
       ))}
-      <img src={ArrowRight} alt='ArrowRight'/>
+      {/* <img src={ArrowRight} alt='ArrowRight'/> */}
     </div>
   );
 }

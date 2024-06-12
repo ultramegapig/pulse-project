@@ -5,6 +5,7 @@ import "../styles/courses.scss";
 import { AuthContext } from "../context/AuthContext";
 import "../styles/courses.scss";
 import ArrowRight from "../images/arrow-right.svg";
+import CourseDescriptionPage from "./CourseDescriptionPage";
 
 interface Course {
   course_id: number;
@@ -48,6 +49,7 @@ const Courses: React.FC = () => {
             </div>
             <Link to={`/course/${course.course_id}`}>
               <img src={ArrowRight} alt="" />
+              
             </Link>
           </div>
         ))}

@@ -17,6 +17,7 @@ import { AuthContext, AuthProvider } from './context/AuthContext';
 import './styles/sideBar.scss';
 import Login from './components/Login';
 import Register from './areas/Register';
+import CourseDescriptionPage from './areas/CourseDescriptionPage';
 
 // Lazy load components
 const MainPage = lazy(() => import('./areas/MainPage'));
@@ -114,7 +115,7 @@ const AppContent: React.FC = () => {
                 <Route key={key} path={modules[parseInt(key)].path} element={React.createElement(modules[parseInt(key)].component)} />
               ))}
               <Route path="/courses" element={<Courses />} />
-              <Route path="/podrobnosti/:id" element={<Podrobnosti />} />
+              <Route path="/course/:id" element={<CourseDescriptionPage />} />
             </Routes>
           </Suspense>
         </div>

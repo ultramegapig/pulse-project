@@ -1,17 +1,24 @@
+.area{
+    display: flex;
+    justify-content: space-between;
+}
+
 .mainPageLeft {
     width: 60%;
-    background-color: red;
+    
 }
 
 .mainPageRight {
-    width: 40%;
-    background-color: blue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
 }
 
 .testComplete {
     display: flex;
     flex-direction: column;
-    margin-bottom: 50px;
+    margin-bottom: 50pt;
 }
 
 .titleHead {
@@ -19,14 +26,36 @@
     justify-content: space-between;
 }
  
-.testBlocksList {
+.testComplete-list {
     display: flex;
-    justify-content: space-around;
+    
+}
+
+.testComplete-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10pt;
+}
+
+.testComplete-title > h1{
+    font-family: 'bold';
+    font-size: 30pt;
 }
 
 
 .testBlock {
-    width: 30%;
-    background-color: lightblue;
+    
+    background-color: white;
     height: 150px;
+}
+
+.testComplete-title button{
+    border: none;
+}
+
+.mainPageLeft-missed > h2{
+    font-family: 'bold';
+    font-size: 20pt;
+    margin-bottom: 20pt;
 }
