@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/podrobnosti.scss';
@@ -37,12 +36,11 @@ function BlockOfLesson({ lecture }: BlockOfLessonProps) {
 function Table() {
   const { authState } = useContext(AuthContext);
   const [lectures, setLectures] = useState<Lecture[]>([]);
-  const [subjectName, setSubjectName] = useState('');
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get<Lecture[]>(
+        const response = await axios.get<{ upcoming_lectures: Lecture[] }>(
           'http://127.0.0.1:5000/api/lectures/get_all',
           {
             headers: {
@@ -50,7 +48,7 @@ function Table() {
             },
           }
         );
-        const sortedLectures = response.data.sort((a, b) => new Date(a.lecture_datetime).getTime() - new Date(b.lecture_datetime).getTime());
+        const sortedLectures = response.data.upcoming_lectures.sort((a, b) => new Date(a.lecture_datetime).getTime() - new Date(b.lecture_datetime).getTime());
         setLectures(sortedLectures);
       } catch (error) {
         console.error('Error fetching lectures:', error);

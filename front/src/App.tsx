@@ -25,6 +25,7 @@ const Tests = lazy(() => import('./areas/Tests'));
 const Progress = lazy(() => import('./areas/Progress'));
 const Numbers = lazy(() => import('./areas/Numbers'));
 const Podrobnosti = lazy(() => import('./areas/Podrobnosti'));
+const CourseDescriptionPage = lazy(() => import('./areas/CourseDescriptionPage'));
 
 interface Module {
   path: string;
@@ -45,7 +46,6 @@ const modules: { [key: number]: Module } = {
 const AppContent: React.FC = () => {
   const { authState, setAuthState } = useContext(AuthContext);
   const [activeLink, setActiveLink] = useState<number | null>(() => {
-    // Retrieve the active link from local storage or default to null
     const storedActiveLink = localStorage.getItem('activeLink');
     return storedActiveLink ? parseInt(storedActiveLink) : null;
   });
@@ -102,7 +102,7 @@ const AppContent: React.FC = () => {
               {Object.keys(modules).map((key) => (
                 <Route key={key} path={modules[parseInt(key)].path} element={React.createElement(modules[parseInt(key)].component)} />
               ))}
-              <Route path="/podrobnosti/:id" element={<Podrobnosti />} />
+              <Route path="/course_info/:course_id" element={<CourseDescriptionPage />} />
             </Routes>
           </Suspense>
         </div>

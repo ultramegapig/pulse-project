@@ -39,7 +39,7 @@ const Courses: React.FC = () => {
           <div key={course.course_id} className="course-item">
             <h2>{course.course_name}</h2>
             <p>Преподаватель: {course.teacher_name}</p>
-            <Link to={`/course/${course.course_id}`}>Подробнее</Link>
+            <Link to={`/course_info/${course.course_id}`}>Подробнее</Link>
           </div>
         ))}
       </div>

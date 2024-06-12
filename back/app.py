@@ -214,41 +214,9 @@ def add_lecture():
 # Список доступных лекций       [T]
 # Принимает: 
 # Отдаёт: lecture_list {lecture_id, lecture_name, course_id, additional_materials, lecture_datetime, lecture_link}
-@app.route('/api/lectures/get_all', methods=['GET'])
-@jwt_required()
-def get_lectures():
-    current_user = get_jwt_identity()
-    if current_user['role'] != 'Преподаватель':
-        return jsonify({'message': 'Permission denied'}), 403
-
-    lectures = Lecture.query.all()
-    lecture_list = [{'lecture_id': lecture.lecture_id, 'lecture_name': lecture.lecture_name, 'course_id': lecture.course_id, 'additional_materials': lecture.additional_materials, 'lecture_datetime': lecture.lecture_datetime.isoformat(), 'lecture_link': lecture.lecture_link} for lecture in lectures]
-    return jsonify(lecture_list), 200
-
-
-# Список лекций для курса       [S]
-# Принимает: course_id
-# Отдаёт: lecture_list {lecture_id, lecture_name, course_id, additional_materials, lecture_datetime, lecture_link}
 @app.route('/api/lectures/by_course', methods=['POST'])
 @jwt_required()
 def get_course_lectures():
-    current_user = get_jwt_identity()
-    if current_user['role'] != 'Студент':
-        return jsonify({
-            "status": 403,
-            "message": "Creating error",
-            "code": "Bad Request",
-            "details": {
-                "createErrors": [
-                    {
-                        "name": "role",
-                        "message": "Недостаточно прав для доступа к лекциям",
-                        "type": "authorization"
-                    }
-                ]
-            }
-        }), 403
-
     data = request.get_json()
     course_id = data.get('course_id')
     errors = []
@@ -270,16 +238,32 @@ def get_course_lectures():
                 "createErrors": errors
             }
         }), 400
-
     teacher = User.query.filter_by(user_id=course.teacher_id).first()
     lectures = Lecture.query.filter_by(course_id=course_id).all()
-    lecture_list = [{'lecture_id': lecture.lecture_id, 'lecture_name': lecture.lecture_name, 'course_id': lecture.course_id, 'additional_materials': lecture.additional_materials, 'lecture_datetime': lecture.lecture_datetime.isoformat(), 'lecture_link': lecture.lecture_link} for lecture in lectures]
+
+    omsk_offset = timedelta(hours=6)  # Часовой пояс Омска +6 часов
+    now = datetime.utcnow() + omsk_offset
+
+    past_lectures = sorted(
+        [lecture for lecture in lectures if lecture.lecture_datetime < now],
+        key=lambda x: x.lecture_datetime
+    )
+    upcoming_lectures = sorted(
+        [lecture for lecture in lectures if lecture.lecture_datetime >= now],
+        key=lambda x: x.lecture_datetime
+    )
+
+    past_lecture_list = [{'lecture_id': lecture.lecture_id, 'lecture_name': lecture.lecture_name, 'course_id': lecture.course_id, 'additional_materials': lecture.additional_materials, 'lecture_link': lecture.lecture_link} for lecture in past_lectures]
+    upcoming_lecture_list = [{'lecture_id': lecture.lecture_id, 'lecture_name': lecture.lecture_name, 'course_id': lecture.course_id, 'additional_materials': lecture.additional_materials, 'lecture_datetime': lecture.lecture_datetime.isoformat(), 'lecture_link': lecture.lecture_link} for lecture in upcoming_lectures]
     
     return jsonify({
         'course_name': course.course_name,
         'teacher_name': f"{teacher.first_name} {teacher.last_name}",
-        'lectures': lecture_list
+        'past_lectures': past_lecture_list,
+        'upcoming_lectures': upcoming_lecture_list
     }), 200
+
+
 
 # Получить инфо о лекции        [E]
 # Принимает: lecture_id
@@ -335,6 +319,25 @@ def get_stream():
     if lecture:
         return jsonify({'lecture_link': lecture.lecture_link}), 200
     return jsonify({'message': 'Lecture not found'}), 404
+
+
+@app.route('/api/lectures/get_all', methods=['GET'])
+@jwt_required()
+def get_lectures():
+    current_time = datetime.utcnow()
+    omsk_offset = timedelta(hours=6)  # Часовой пояс Омска +6 часов
+    omsk_time = current_time + omsk_offset
+
+    past_lectures = Lecture.query.filter(Lecture.lecture_datetime < omsk_time).all()
+    upcoming_lectures = Lecture.query.filter(Lecture.lecture_datetime >= omsk_time).all()
+
+    past_lecture_list = [{'lecture_id': lecture.lecture_id, 'lecture_name': lecture.lecture_name, 'course_id': lecture.course_id, 'additional_materials': lecture.additional_materials, 'lecture_datetime': lecture.lecture_datetime.isoformat(), 'lecture_link': lecture.lecture_link} for lecture in past_lectures]
+    upcoming_lecture_list = [{'lecture_id': lecture.lecture_id, 'lecture_name': lecture.lecture_name, 'course_id': lecture.course_id, 'additional_materials': lecture.additional_materials, 'lecture_datetime': lecture.lecture_datetime.isoformat(), 'lecture_link': lecture.lecture_link} for lecture in upcoming_lectures]
+
+    return jsonify({
+        'past_lectures': past_lecture_list,
+        'upcoming_lectures': upcoming_lecture_list
+    }), 200
 
 
 # Сбор результатов теста        [T]

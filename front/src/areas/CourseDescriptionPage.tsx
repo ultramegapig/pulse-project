@@ -1,51 +1,74 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import "../styles/courseDescriptionPage.scss";
 import GnomIcon from "../images/gnomIcon.svg";
 import ArrowLeft from "../images/arrow-left.svg";
+import { AuthContext } from '../context/AuthContext'; // Замените на правильный путь
 
 interface CourseDescriptionPageDieProps {
-  courseName: string;
-  courseStart: string | null;
+  lectureName: string;
+  lectureDatetime: string | null;
   className?: string;
-  isBlack: boolean; // Обновленный тип данных для courseStart
+}
+
+interface Lecture {
+  lecture_id: number;
+  lecture_name: string;
+  course_id: number;
+  additional_materials: string;
+  lecture_datetime: string;
+  lecture_link: string;
+}
+
+interface ApiResponse {
+  course_name: string;
+  teacher_name: string;
+  past_lectures: Lecture[];
+  upcoming_lectures: Lecture[];
 }
 
 const CourseDescriptionPage: React.FC = () => {
-  const testData1 = [
-    {
-      courseName: "Курс 1",
-      courseStart: "",
-      isBlack: false, // карточка не черная
-    },
-    {
-      courseName: "Курс 2",
-      courseStart: "20 сентября 2024",
-      isBlack: true, // карточка черная
-    },
-  ];
+  const { course_id } = useParams<{ course_id: string }>();
+  const { authState } = useContext(AuthContext);
+  const [upcomingLectures, setUpcomingLectures] = useState<Lecture[]>([]);
+  const [pastLectures, setPastLectures] = useState<Lecture[]>([]);
+  const [teacherName, setTeacherName] = useState<string>("");
+  const [courseName, setCourseName] = useState<string>("");
 
-  // Второй массив данных
-  const testData2 = [
-    {
-      courseName: "Курс 3",
-      courseStart: "30 октября 2024",
-      isBlack: false, // карточка не черная
-    },
-    {
-      courseName: "Курс 4",
-      courseStart: "5 декабря 2024",
-      isBlack: true, // карточка черная
-    },
-  ];
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      try {
+        const response = await axios.post<ApiResponse>(
+          'http://localhost:5000/api/lectures/by_course',
+          { course_id: course_id },
+          {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
+          }
+        );
 
-  const renderCourseDescriptionPageDie = (data: any[]) => {
-    return data.map((course, index) => (
+        const { course_name, teacher_name, past_lectures, upcoming_lectures } = response.data;
+        setCourseName(course_name);
+        setTeacherName(teacher_name);
+        setPastLectures(past_lectures);
+        setUpcomingLectures(upcoming_lectures);
+      } catch (error) {
+        console.error("Error fetching course data:", error);
+      }
+    };
+
+    fetchCourseData();
+  }, [course_id, authState.token]);
+
+  const renderLectures = (lectures: Lecture[], className: string) => {
+    return lectures.map((lecture) => (
       <CourseDescriptionPageDie
-        key={index}
-        courseName={course.courseName}
-        courseStart={course.courseStart}
-        className={course.isBlack ? "black" : ""}
-        isBlack={false}
+        key={lecture.lecture_id}
+        lectureName={lecture.lecture_name}
+        lectureDatetime={lecture.lecture_datetime}
+        className={className}
       />
     ));
   };
@@ -54,13 +77,13 @@ const CourseDescriptionPage: React.FC = () => {
     <div className="courseDescriptionPage">
       <div className="courseDescriptionPage-title">
         <img src={ArrowLeft} alt="" />
-        <h1>Komp seti</h1>
+        <h1>{courseName}</h1>
       </div>
       <div className="courseDescriptionPage-underTitle">
         <div className="courseDescriptionPage-underTitle-lectureCount">
           <img src={GnomIcon} alt="" />
           <p>Занятий в курсе: </p>
-          <p>16</p>
+          <p>{upcomingLectures.length + pastLectures.length}</p>
         </div>
         <a
           href="https://www.example.com"
@@ -71,31 +94,31 @@ const CourseDescriptionPage: React.FC = () => {
         </a>
         <div className="courseDescriptionPage-underTitle-teacher">
           <div className="courseDescriptionPage-underTitle-teacher-img"></div>
-          <p>Сиганов Илья</p>
+          <p>{teacherName}</p>
         </div>
       </div>
       <div className="courseDescriptionPage-uncoming">
         <h2>Предстоящие лекции</h2>
-      {renderCourseDescriptionPageDie(testData1)}
+        {renderLectures(upcomingLectures, "white")}
       </div>
       <div className="courseDescriptionPage-finished">
         <h2>Завершённые лекции</h2>
-      {renderCourseDescriptionPageDie(testData2)}
+        {renderLectures(pastLectures, "black")}
       </div>
     </div>
   );
 };
 
 const CourseDescriptionPageDie: React.FC<CourseDescriptionPageDieProps> = ({
-  courseName,
-  courseStart,
+  lectureName,
+  lectureDatetime,
   className,
 }) => {
-  const isCourseStartEmpty = !courseStart;
-  const backgroundColor = isCourseStartEmpty ? "white" : "black";
-  const textColor = isCourseStartEmpty ? "black" : "white";
-  const lineColor = isCourseStartEmpty ? "#FFD700" : "#A64AC9";
-  const displayTime = isCourseStartEmpty ? "none" : "flex";
+  const isLectureDatetimeEmpty = !lectureDatetime;
+  const backgroundColor = isLectureDatetimeEmpty ? "white" : "black";
+  const textColor = isLectureDatetimeEmpty ? "black" : "white";
+  const lineColor = isLectureDatetimeEmpty ? "#FFD700" : "#A64AC9";
+  const displayTime = isLectureDatetimeEmpty ? "none" : "flex";
 
   return (
     <div
@@ -107,14 +130,14 @@ const CourseDescriptionPageDie: React.FC<CourseDescriptionPageDieProps> = ({
         style={{ backgroundColor: lineColor }}
       ></div>
       <div className="courseDescriptionPageDie-content">
-        <h1 style={{ color: textColor }}>{courseName}</h1>
-        {courseStart && (
+        <h1 style={{ color: textColor }}>{lectureName}</h1>
+        {lectureDatetime && (
           <div
             className="courseDescriptionPageDie-content-time"
             style={{ display: displayTime }}
           >
             <p>Начнётся:</p>
-            <p>{courseStart}</p>
+            <p>{lectureDatetime}</p>
           </div>
         )}
       </div>
