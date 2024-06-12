@@ -129,20 +129,12 @@ const AppContent: React.FC = () => {
   );
 };
 
-const chartData = [
-  { label: 'A', value: 30 }, // representing 30%
-  { label: 'B', value: 100 }, // representing 50%
-  { label: 'C', value: 20 }, // representing 20%
-  // Add more data objects as needed
-];
 
-let successPercentage = 75
 // Root app component
 const App: React.FC = () => {
   return (
     <div className="App">
-      <BarChart data={chartData} />
-      <DonutChart successPercentage={successPercentage} />
+       <BarChart/>
     </div>
   );
 };
