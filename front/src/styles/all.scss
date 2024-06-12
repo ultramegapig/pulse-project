@@ -84,8 +84,10 @@ body {
     border-radius: 3dvb;
     padding: 2dvb;
     padding-top: 3dvb;
-    width: 38dvb;
+    background-color: white;
     height: auto;
+    width: 50vh;
+    margin-bottom: 20pt;
 }
 
 .shortSchedule-calendar-title{
@@ -159,9 +161,9 @@ body {
     align-items: center;
     justify-content: space-between;
     background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
+    border-radius: 10px;
     margin: 5px;
-    padding: 1.5dvb;
+    padding: 2.5vh;
   }
   
   .currentDay {

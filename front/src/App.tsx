@@ -22,6 +22,7 @@ import CourseDescriptionPage from './areas/CourseDescriptionPage';
 
 import BarChart from './components/Barchart';
 import DonutChart from './components/Donutchart';
+import MainPageTeacher from './areas/MainPageTeacher';
 
 
 // Lazy load components
@@ -135,7 +136,8 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <AppContent/>
+        {/* <AppContent/> */}
+        <MainPageTeacher/>
       </Router>
     </AuthProvider>
   );
