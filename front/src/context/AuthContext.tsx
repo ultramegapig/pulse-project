@@ -35,6 +35,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   });
 
   useEffect(() => {
+    const handleStorageChange = () => {
+      const token = localStorage.getItem('accessToken');
+      const user = localStorage.getItem('user');
+      if (token && user) {
+        setAuthState({ token, user: JSON.parse(user), isAuthenticated: true });
+      } else {
+        setAuthState(defaultAuthState);
+      }
+    };
+
+    // Listen for changes in localStorage from other tabs/windows
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  useEffect(() => {
     if (authState.token && authState.user) {
       localStorage.setItem('accessToken', authState.token);
       localStorage.setItem('user', JSON.stringify(authState.user));

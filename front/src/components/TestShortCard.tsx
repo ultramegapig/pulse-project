@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
+
 import '../styles/testShortCard.scss';
-=======
+
 import '../styles/tests.scss';
 import '../styles/courseTestsBlock.scss';
-import '../styles/all.scss';
->>>>>>> 8955ed92ce610876d0322f9778edf70eaf3ce3fc
 
+
+import '../styles/all.scss';
 
 interface TestShortCardProps {
   testName: string;

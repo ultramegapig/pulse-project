@@ -2,7 +2,6 @@ import React from 'react';
 import TestShortCard from './TestShortCard';
 import ArrowRight from '../images/arrow-right.svg';
 import '../styles/courseTestsBlock.scss';
-import '../styles/tests.scss';
 
 // Определяем тип данных для карточки теста
 interface TestCardData {
@@ -23,12 +22,12 @@ const TestsBlock: React.FC<TestsBlockProps> = ({ testCardsData }) => {
     <div className='testBlock'>
       {testCardsData.map((cardData, index) => (
         <TestShortCard
-              key={index}
-              testName={cardData.testName}
-              progressPercent={cardData.progressPercent}
-              deadColor={cardData.deadColor}
-              deadline={cardData.deadline} // Передаем дедлайн
-              backgroundColor={''}      />
+          key={index}
+          testName={cardData.testName}
+          progressPercent={cardData.progressPercent}
+          deadColor={cardData.deadColor}
+          deadline={cardData.deadline} // Передаем дедлайн
+          backgroundColor={''} index={0}      />
       ))}
       {/* <img src={ArrowRight} alt='ArrowRight'/> */}
     </div>
