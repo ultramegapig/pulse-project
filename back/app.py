@@ -17,7 +17,7 @@ from models import db, User, Course, Lecture, Test, TestResult, Group, Metrics, 
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///online_lectures.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///online_lectureshui.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=1)
@@ -532,7 +532,6 @@ def get_group():
 # Принимает: 
 # Отдаёт: course_list {course_id, course_name, description, syllabus, lecture_count, group_id, teacher_id}
 @app.route('/api/course/get_all', methods=['GET'])
-@jwt_required()
 def get_courses():
     courses = Course.query.all()
     course_list = [{'course_id': course.course_id, 'course_name': course.course_name, 'description': course.description, 'syllabus': course.syllabus, 'lecture_count': course.lecture_count, 'group_id': course.group_id, 'teacher_id': course.teacher_id} for course in courses]

@@ -1,8 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import '../styles/courses.scss';
-import { AuthContext } from '../context/AuthContext';
+import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import "../styles/courses.scss";
+import { AuthContext } from "../context/AuthContext";
+import "../styles/courses.scss";
+import ArrowRight from "../images/arrow-right.svg";
 
 interface Course {
   course_id: number;
@@ -17,14 +19,17 @@ const Courses: React.FC = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get<Course[]>('http://localhost:5000/api/course/get_all', {
-          headers: {
-            Authorization: `Bearer ${authState.token}`,
-          },
-        });
+        const response = await axios.get<Course[]>(
+          "http://127.0.0.1:5000/api/course/get_all",
+          {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
+          }
+        );
         setCourses(response.data);
       } catch (error) {
-        console.error('Error fetching courses:', error);
+        console.error("Error fetching courses:", error);
       }
     };
 
@@ -37,9 +42,13 @@ const Courses: React.FC = () => {
       <div className="courses-list">
         {courses.map((course) => (
           <div key={course.course_id} className="course-item">
-            <h2>{course.course_name}</h2>
-            <p>Преподаватель: {course.teacher_name}</p>
-            <Link to={`/course/${course.course_id}`}>Подробнее</Link>
+            <div className="course-item-text">
+              <h2>{course.course_name}</h2>
+              <p>Преподаватель: {course.teacher_name}</p>
+            </div>
+            <Link to={`/course/${course.course_id}`}>
+              <img src={ArrowRight} alt="" />
+            </Link>
           </div>
         ))}
       </div>
