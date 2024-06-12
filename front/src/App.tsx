@@ -133,15 +133,10 @@ const AppContent: React.FC = () => {
 // Root app component
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="*" element={<AppContent />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
-  )}
+    <div className="App">
+       <BarChart/>
+    </div>
+  );
+};
 
 export default App;
