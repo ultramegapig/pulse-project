@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import '../styles/register.scss';
+import { Link } from "react-router-dom";
 
 interface Group {
   group_id: string;
@@ -22,11 +23,13 @@ const Register: React.FC = () => {
   const [groupId, setGroupId] = useState<string>("");
   const [groups, setGroups] = useState<Group[]>([]);
   const [message, setMessage] = useState("");
+  const [otpSecret, setOtpSecret] = useState("");
+  const [qrCode, setQrCode] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/api/groups/get");
+        const response = await axios.get<Group[]>("http://127.0.0.1:5000/api/groups/get");
         setGroups(response.data);
       } catch (error) {
         console.error("Error fetching groups:", error);
@@ -54,6 +57,8 @@ const Register: React.FC = () => {
         group_id: role === "Студент" ? groupId : undefined,
       });
       setMessage(response.data.message);
+      setOtpSecret(response.data.otp_secret); // Set the received OTP secret
+      setQrCode(response.data.qr_code); // Set the received QR code
     } catch (error) {
       setMessage("Registration failed. Please try again.");
       console.error(error);
@@ -100,7 +105,7 @@ const Register: React.FC = () => {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Укажите имя"
-              required
+                required
               />
             </div>
             <div className="register-content-form-group">
@@ -111,11 +116,11 @@ const Register: React.FC = () => {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Укажите фамилию"
-              required
+                required
               />
             </div>
           </div>
-          <div >
+          <div>
             <div className="register-content-form-group">
               <label htmlFor="email">E-mail</label>
               <input
@@ -124,7 +129,7 @@ const Register: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Введите электронную почту"
-              required
+                required
               />
             </div>
           </div>
@@ -137,7 +142,7 @@ const Register: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Придумайте пароль"
-              required
+                required
               />
             </div>
             <div className="register-content-form-group">
@@ -148,17 +153,22 @@ const Register: React.FC = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Повторите пароль"
-              required
+                required
               />
             </div>
           </div>
           <button type="submit">Зарегистрироваться</button>
         </form>
-        <div className='register-content-form-login'>
-          <p>Уже есть аккаунт?</p>
-          <a href="/register" className="register-link">Войдите</a>
-        </div>
+
+        {/* Display QR code if available */}
+        {qrCode && (
+          <div className="qr-code">
+            <img src={`data:image/png;base64,${qrCode}`} alt="QR Code" />
+          </div>
+        )}
         {message && <p>{message}</p>}
+
+        <Link to="/login">Уже есть аккаунт?</Link> {/* Добавляем ссылку на логин */}
       </div>
     </div>
   );

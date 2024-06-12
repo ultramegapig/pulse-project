@@ -15,6 +15,8 @@ import React, { useState, lazy, Suspense, useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { AuthContext, AuthProvider } from './context/AuthContext';
 import './styles/sideBar.scss';
+import Login from './components/Login';
+import Register from './areas/Register';
 
 const MainPage = lazy(() => import('./areas/MainPage'));
 const Table = lazy(() => import('./areas/Table'));
@@ -62,7 +64,6 @@ const AppContent: React.FC = () => {
 
   const handleLinkClick = (key: number) => {
     setActiveLink(key);
-    // Store the active link in local storage
     localStorage.setItem('activeLink', key.toString());
   };
 
@@ -101,7 +102,6 @@ const AppContent: React.FC = () => {
               {Object.keys(modules).map((key) => (
                 <Route key={key} path={modules[parseInt(key)].path} element={React.createElement(modules[parseInt(key)].component)} />
               ))}
-              <Route path="/courses" element={<Courses />} />
               <Route path="/podrobnosti/:id" element={<Podrobnosti />} />
             </Routes>
           </Suspense>
@@ -111,12 +111,15 @@ const AppContent: React.FC = () => {
   );
 }
 
-
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <AppContent />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<AppContent />} />
+        </Routes>
       </Router>
     </AuthProvider>
   );

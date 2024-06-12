@@ -1,37 +1,39 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, FormEvent } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import '../styles/all.scss';
+import { Link } from 'react-router-dom'; // Импортируем Link
+import '../styles/login.scss';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
-  const [message, setMessage] = useState('');
-  const [otp, setOtp] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [otp, setOtp] = useState<string>('');
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('');
   const { setAuthState } = useContext(AuthContext);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/user/login', {
+      const response = await axios.post<{ access_token: string }>('http://localhost:5000/api/user/login', {
         email,
         password,
-        otp
+        otp, // Include OTP field in the request body
       });
 
       const { access_token } = response.data;
-      const decodedToken = JSON.parse(atob(access_token.split('.')[1]));
 
       localStorage.setItem('accessToken', access_token);
+      // Assuming your AuthContext provides a function setAuthenticated() to update the authentication state
       setAuthState({
-        token: access_token,
-        user: decodedToken,
         isAuthenticated: true,
+        token: access_token,
+        user: null, // Update this value as needed based on your AuthContext
       });
-      setMessage('Вход успешен!');
-    } catch (error) {
-      setMessage('Ошибка входа. Проверьте свои учетные данные и попробуйте снова.');
+      setMessage('Login successful!');
+    } catch (error: any) {
+      const errorMsg = error.response?.data?.message || 'Login failed. Please check your credentials and try again.';
+      setMessage(errorMsg);
     }
   };
 
@@ -47,7 +49,7 @@ const Login: React.FC = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Введите электронную почту"
+              placeholder="Enter email"
               required
             />
           </div>
@@ -58,18 +60,7 @@ const Login: React.FC = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Введите пароль"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="otp">2FA Код</label>
-            <input
-              type="text"
-              id="otp"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              placeholder="Введите 2FA код"
+              placeholder="Enter password"
               required
             />
           </div>
@@ -85,11 +76,22 @@ const Login: React.FC = () => {
             </div>
             <a href="#" className="forgot-password">Забыли пароль?</a>
           </div>
-          <button type="submit">Вход</button>
+          <div className="form-group otp">
+            <input
+              type="text"
+              id="otp"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              placeholder="Введите OTP ключ"
+              required
+            />
+            <p>*Введите OTP ключ из приложения Google Authenticator</p>
+          </div>
+          <button type="submit">Войти</button>
         </form>
         <div className='form-registration'>
-          <p>Нет аккаунта?</p>
-          <a href="/register" className="register-link">Зарегистрируйтесь</a>
+          <p>Ещё нет аккаунта?</p>
+          <Link to="/register" className="register-link">Зарегистрируйтесь</Link>
         </div>
         {message && <p>{message}</p>}
       </div>

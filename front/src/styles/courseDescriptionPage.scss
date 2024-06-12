@@ -1,0 +1,162 @@
+.courseDescriptionPage h2{
+    font-family: 'medium';
+    font-size: 20pt;
+    opacity: 0.5;
+    margin-bottom: 20pt;
+}
+
+.courseDescriptionPage-title{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 25pt;
+}
+
+.courseDescriptionPage-title > h1 {
+    color: black;
+    font-family: 'bold';
+    font-size: 40pt;
+}
+
+.courseDescriptionPage-title img {
+    height: 30pt;
+    margin-right: 50pt;
+}
+
+.courseDescriptionPage-underTitle   {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 70%;
+    margin-bottom: 50pt;
+}
+
+.courseDescriptionPage-underTitle a {
+    text-decoration: none;
+    color: #A231CD;
+    font-family: 'bold';
+    font-size: 18pt;
+}
+
+.courseDescriptionPage-underTitle-lectureCount{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.courseDescriptionPage-underTitle-lectureCount img {
+    margin-right: 10pt;
+}
+
+.courseDescriptionPage-underTitle-lectureCount p {
+    font-family: 'bold';
+    font-size: 18pt;
+    margin-right: 2pt;
+}
+
+.courseDescriptionPage-underTitle-teacher{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.courseDescriptionPage-underTitle-teacher-img {
+    width: 5dvb; 
+    height: 5dvb;
+    border-radius: 50%; 
+    overflow: hidden; 
+    background-image: url('../images/siganov.png'); 
+    background-size: cover; 
+    background-position: center; 
+}
+
+.courseDescriptionPage-underTitle-teacher p{
+    font-family: 'bold';
+    font-size: 18pt;
+    margin-left: 10pt;
+}
+
+.courseDescriptionPage-uncoming{
+    margin-bottom:70pt;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.courseDescriptionPageDie {
+    display: flex;
+    flex-direction: row;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 20pt;
+    border-radius: 15pt;
+    color: black;
+    margin-bottom: 20pt;    
+  }
+  
+  .courseDescriptionPageDie-sideLine {
+    width: 2vh;
+    border-top-left-radius: 20pt;
+    border-bottom-left-radius: 20pt;
+    margin-right: 20pt;
+  }
+
+  .courseDescriptionPageDie.black {
+    background-color: black;
+    color: white; /* Задаем белый цвет текста для черной карточки */
+  }
+  
+  .courseDescriptionPageDie-content {
+  }
+  
+  .courseDescriptionPageDie-content > h1 {
+    font-family: 'bold';
+    font-size: 25pt;
+    margin-bottom: 30pt;
+  }
+  
+  .courseDescriptionPageDie-content-time {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .courseDescriptionPageDie-content-time p {
+    font-family: 'medium';
+    font-size: 18pt;
+    margin-right: 10pt;
+    color: white;
+  }
+  
+  /* Обновленные стили в соответствии с условиями */
+  .courseDescriptionPageDie {
+    background-color: white;
+  }
+  
+  .courseDescriptionPageDie-sideLine {
+    background-color: #FFD700;
+  }
+  
+  .courseDescriptionPageDie-content > h1 {
+    color: black;
+  }
+  
+  .courseDescriptionPageDie-content-time {
+    display: none; /* Не отображаем блок, если courseStart пустой */
+  }
+  
