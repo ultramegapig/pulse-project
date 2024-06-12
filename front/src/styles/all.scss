@@ -236,11 +236,22 @@ body {
     background-position: center; 
   }
 
-  
-<<<<<<< HEAD
-=======
 
->>>>>>> 8955ed92ce610876d0322f9778edf70eaf3ce3fc
+  .testBlock{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 5dvh;
+    justify-content: space-between;
+    padding: 10pt 20pt;
+  }
+
+  .testBlock img{
+    margin-left: 25pt;
+  }
+
   .login {
     display: flex;
     justify-content: center; /* Центрируем по горизонтали */
