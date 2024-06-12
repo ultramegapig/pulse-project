@@ -1,6 +1,7 @@
 .sideBar {
   display: flex;
   flex-direction: column;
+  margin-left: 20pt;
 }
 
 .sideBarElement {
@@ -10,7 +11,7 @@
   margin-bottom: 5px;
   color: #6a1b9a; /* фиолетовый цвет для иконок и текста */
   text-decoration: none;
-  border-radius: 10pt;
+  border-radius: 20pt;
   color: black;
   align-items: center;
 }

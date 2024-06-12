@@ -10,18 +10,18 @@ import ActiveCalendar from './images/activeCalendarIcon.svg';
 import ActiveLectureIcon from './images/activeCourseIcon.svg';
 import ActiveTestsIcon from './images/activeTestsIcon.svg';
 import ActiveStatisticIcon from './images/activeStatisticIcon.svg';
-import YouTubePlayer from './components/YoutubePlayer';
 import React, { useState, lazy, Suspense, useContext, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { AuthContext, AuthProvider } from './context/AuthContext';
 import './styles/sideBar.scss';
 import Login from './components/Login';
 import Register from './areas/Register';
-
 import CourseDescriptionPage from './areas/CourseDescriptionPage';
 
-import BarChart from './components/Barchart';
+import Notification from './images/notification.svg';
+import Logo from './images/logo.svg'
 import DonutChart from './components/Donutchart';
+import BarChart from './components/Barchart';
 
 
 // Lazy load components
@@ -88,10 +88,10 @@ const AppContent: React.FC = () => {
   return (
     <div className="App">
       <header className="header">
-        <div className="logo">logo</div>
+        <div className="logo"><img src={Logo} alt=''/></div>
         <div className="rightHeader">
-          <div className="notifications">notification</div>
-          <div className="userStuff">user</div>
+          <div className="notifications"><img src={Notification} alt=''/></div>
+          <div className="userStuff"></div>
         </div>
       </header>
 
@@ -135,7 +135,7 @@ const AppContent: React.FC = () => {
 const App: React.FC = () => {
   return (
     <div className="App">
-       <Tests/>
+       <BarChart/>
     </div>
   );
 };

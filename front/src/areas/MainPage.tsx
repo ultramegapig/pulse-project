@@ -1,48 +1,77 @@
-import React, { useEffect, useState } from 'react'
-import '../styles/mainpage.scss'
+import React from "react";
+import "../styles/mainpage.scss";
+import TestShortCard from "../components/TestShortCard";
+import ArrowRight from "../images/arrow-right.svg";
+import MissedLectureCard from "../components/MissedLectureCard";
+import ShortSchedule from "../components/ShortSchedule";
+import BarChart from "../components/Barchart";
 
+const cardsData = [
+  {
+    testName: "Test 1",
+    progressPercent: 0,
+    backgroundColor: "#ff0000",
+    deadColor: "#ffffff",
+    deadline: "2024-06-20",
+  },
+  {
+    testName: "Test 2",
+    progressPercent: 50,
+    backgroundColor: "#0000ff",
+    deadColor: "#ff00ff",
+    deadline: "2024-06-25",
+  },
+  {
+    testName: "Test 3",
+    progressPercent: 100,
+    backgroundColor: "#00ffff",
+    deadColor: "#ffff00",
+    deadline: "2024-06-30",
+  },
+];
 
 function MainPage() {
-
   return (
-    <div className='area'>
-      
+    <div className="area">
       <div className="mainPageLeft">
-
         <div className="testComplete">
-
-          <div className="titleHead">
-            <div>мои тесты</div>
-            <button className="arrowButton">
-              button
+          <div className="testComplete-title">
+            <h1>Мои тесты</h1>
+            <button>
+              <img src={ArrowRight} alt="" />
             </button>
           </div>
-
-
-          <div className="testBlocksList">
-            <div className="testBlock color-box">hui</div>
-            <div className="testBlock random-colored-div">pizda</div>
-            <div className="testBlock random-colored-div">pidarasina</div>
-          </div>
-      
-        </div>
-
-        <div className="yourEnter">
-          <div className="secondaryTitle">вы пропустили лекцию, посмотрите ее сейчас</div>
-          <div className="missinglesson">
-            ты меня проебал
+          <div className="testComplete-list">
+            {cardsData.map((card, index) => (
+              <TestShortCard
+                key={index}
+                testName={card.testName}
+                progressPercent={card.progressPercent}
+                backgroundColor={card.backgroundColor}
+                deadColor={card.deadColor}
+                deadline={card.deadline}
+                index={index} // Передаем текущий индекс
+              />
+            ))}
           </div>
         </div>
-
+        <div className="mainPageLeft-missed">
+          <h2>Вы пропустили лекцию, посмотрите её сейчас</h2>
+            <MissedLectureCard/>
+        </div>
       </div>
-
       <div className="mainPageRight">
-        right
-
+        <ShortSchedule/>
+        <div className="mainPageRight-statistic">
+          <div className="mainPageRight-statistic-title">
+            <h2>Статистика</h2>
+            <img src={ArrowRight} alt="" />
+          </div>
+          <BarChart/>
+        </div>
       </div>
-
     </div>
-  )
+  );
 }
 
-export default MainPage
+export default MainPage;

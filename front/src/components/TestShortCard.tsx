@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
+import '../styles/testShortCard.scss';
+=======
 import '../styles/tests.scss';
 import '../styles/courseTestsBlock.scss';
 import '../styles/all.scss';
+>>>>>>> 8955ed92ce610876d0322f9778edf70eaf3ce3fc
 
 
 interface TestShortCardProps {
@@ -10,9 +14,10 @@ interface TestShortCardProps {
   backgroundColor: string;
   deadColor: string;
   deadline: string;
+  index: number; // Добавляем индекс в пропсы
 }
 
-const TestShortCard: React.FC<TestShortCardProps> = ({ testName, progressPercent, backgroundColor, deadColor, deadline }) => {
+const TestShortCard: React.FC<TestShortCardProps> = ({ testName, progressPercent, backgroundColor, deadColor, deadline, index }) => {
   const calculateDaysLeft = (): number => {
     const difference = +new Date(deadline) - +new Date();
     return difference > 0 ? Math.floor(difference / (1000 * 60 * 60 * 24)) : 0;
@@ -32,8 +37,7 @@ const TestShortCard: React.FC<TestShortCardProps> = ({ testName, progressPercent
     if (progressPercent === 0) {
       return 'black';
     } else {
-      const colors = ['#A532D1', '#FFB800'];
-      return colors[progressPercent % 2] + 'BF'; // 'BF' = 75% opacity in hex
+      return index % 2 === 0 ? '#A532D1BF' : '#FFB800BF'; // 'BF' = 75% opacity in hex
     }
   };
 

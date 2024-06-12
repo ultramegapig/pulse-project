@@ -1,20 +1,43 @@
-.courseslist {
-    display: flex;
-    flex-direction: column;
+.courses > h1 {
+    font-family: 'bold';
+    font-size: 30pt;
+    margin-bottom: 30pt;
 }
 
-.blockofcourse {
+.courses-list {
+    display: flex;
+    flex-direction: column;
+    
+}    
+
+.course-item {
     margin-bottom: 40px;
-    background:
-        linear-gradient(150deg, #ecedee, transparent 30%),
-        linear-gradient(330deg, rgb(210, 206, 242), transparent 30%),
-        linear-gradient(225deg, #fff0be, #fbdce7, #e2fae1, powderblue);
-    height: 20vh;
+    background-image: url('../images/courseFon.svg');
+    height: 15vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative; 
-    border-radius: 40px;
+    border-radius: 20pt;
+    padding: 30pt;
+}
+
+.course-item-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    color: white;
+}
+
+.course-item-text > h2 {
+    font-family: 'bold';
+    font-size: 25pt;
+}
+
+.course-item-text > p {
+    font-family: 'regular';
+    font-size: 18pt;
 }
 
 .blockofcourse:nth-child(even) {

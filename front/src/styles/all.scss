@@ -37,8 +37,24 @@ body {
     display: flex;
 }
 
+.logo img{
+  width: 28%;
+}
+
+.notifications img{
+  width: 5dvb; 
+  height: 5dvb;
+}
+
 .userStuff {
-    margin-left: 30px;
+    margin-left: 30pt;
+    width: 5dvb; 
+    height: 5dvb;
+    border-radius: 50%; 
+    overflow: hidden; 
+    background-image: url('../images/cat.jpg'); 
+    background-size: cover; 
+    background-position: center; 
 }
 
 .area {
@@ -62,52 +78,6 @@ body {
 
 
 
-.testShortCard{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border-radius: 15pt;
-    padding: 15pt;
-    font-size: 10pt;
-    width: 20dvh;
-    
-}
-
-.testShortCard h2{
-    color: white;
-    font-size: 15pt;
-    font-family: 'bold';
-    margin-bottom: 3dvh;
-    width: 20dvh;
-    height: auto;
-    font-family: 'bold';
-}
-
-.testShortCard a{
-    font-size: 12pt ;
-    margin-bottom: 3pt;
-    color: white;
-    font-family: 'regular';
-    font-family: 'bold';
-}
-
-.shortTestBlock{
-    display: flex;
-    flex-direction: column;
-    height: 45dvb;
-    justify-content: space-between;
-    
-
-}
-
-.shortTestBlock h1{
-    font-size: 40pt;
-    
-}
-
-.shortTestBlock img{
-    height: 5dvb;
-}
 
 .shortSchedule{
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -216,7 +186,7 @@ body {
     flex-direction: column;
     background-image: url('../images/lectureBack.svg');
     height: 30dvb;
-    width: 55dvb;
+    
     background-size: cover; /* Позволяет изображению заполнить весь контейнер, сохраняя его пропорции */
     background-position: center;
     border-radius: 5dvb;
@@ -231,6 +201,7 @@ body {
     margin-top: 5dvb;
     font-family: 'bold';
     font-size: 20pt;
+    margin-bottom: 30pt;
   }
 
   .missedLecture-footer{
@@ -260,13 +231,16 @@ body {
     height: 5dvb;
     border-radius: 50%; 
     overflow: hidden; 
-    background-image: url('../images/siganov.png'); 
+    background-image: url('../images/guss.jpg'); 
     background-size: cover; 
     background-position: center; 
   }
 
   
+<<<<<<< HEAD
+=======
 
+>>>>>>> 8955ed92ce610876d0322f9778edf70eaf3ce3fc
   .login {
     display: flex;
     justify-content: center; /* Центрируем по горизонтали */

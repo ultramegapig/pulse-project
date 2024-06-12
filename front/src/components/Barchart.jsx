@@ -14,7 +14,7 @@ const currentDate = new Date();
 
 function BarChart() {
   return (
-    <div>
+    <div className="changeHeight">
     
       <div className="bar-chart">
         {chartData.map((item, index) => {
