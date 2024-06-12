@@ -37,8 +37,24 @@ body {
     display: flex;
 }
 
+.logo img{
+  width: 28%;
+}
+
+.notifications img{
+  width: 5dvb; 
+  height: 5dvb;
+}
+
 .userStuff {
-    margin-left: 30px;
+    margin-left: 30pt;
+    width: 5dvb; 
+    height: 5dvb;
+    border-radius: 50%; 
+    overflow: hidden; 
+    background-image: url('../images/cat.jpg'); 
+    background-size: cover; 
+    background-position: center; 
 }
 
 .area {
