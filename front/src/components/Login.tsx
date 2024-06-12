@@ -1,7 +1,7 @@
 import React, { useState, useContext, FormEvent } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import { Link } from 'react-router-dom'; // Импортируем Link
+import { Link, useNavigate } from 'react-router-dom'; // Импортируем useNavigate
 import '../styles/login.scss';
 
 const Login: React.FC = () => {
@@ -11,6 +11,7 @@ const Login: React.FC = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
   const { setAuthState } = useContext(AuthContext);
+  const navigate = useNavigate(); // Используем useNavigate
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -30,6 +31,7 @@ const Login: React.FC = () => {
         user: null,
       });
       setMessage('Login successful!');
+      navigate('/'); // Перенаправление на главную страницу
     } catch (error: any) {
       const errorMsg = error.response?.data?.message || 'Неправильный логин и/или пароль.';
       setMessage(errorMsg);

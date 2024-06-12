@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
-import axios from 'axios';  
-import { AuthContext } from '../context/AuthContext';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 import '../styles/courses.scss';
-import '../styles/podrobnosti.scss';
-import CourseDescriptionPage from './CourseDescriptionPage';
+import { AuthContext } from '../context/AuthContext';
 
 interface Course {
   course_id: number;
   course_name: string;
+  teacher_name: string;
 }
 
 const Courses: React.FC = () => {
@@ -16,17 +16,15 @@ const Courses: React.FC = () => {
 
   useEffect(() => {
     const fetchCourses = async () => {
-      if (authState.token) {
-        try {
-          const response = await axios.get<Course[]>('http://127.0.0.1:5000/api/course/get_all', {
-            headers: {
-              Authorization: `Bearer ${authState.token}`,
-            },
-          });
-          setCourses(response.data);
-        } catch (error) {
-          console.error('Error fetching courses:', error);
-        }
+      try {
+        const response = await axios.get<Course[]>('http://localhost:5000/api/course/get_all', {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        });
+        setCourses(response.data);
+      } catch (error) {
+        console.error('Error fetching courses:', error);
       }
     };
 
@@ -34,23 +32,19 @@ const Courses: React.FC = () => {
   }, [authState.token]);
 
   return (
-    <div>
-      <CourseDescriptionPage />
-      {/* <div className="title">Courses</div>
-      <div className="courseslist">
+    <div className="courses">
+      <h1>Курсы</h1>
+      <div className="courses-list">
         {courses.map((course) => (
-          <div key={course.course_id} className="blockofcourse">
-            <div className="nameofcourse">{course.course_name}</div>
-            <div className="arrow-container">
-              <Link to={`/podrobnosti/${course.course_id}`} className="arrow-button">
-                <span className="arrow"></span>
-              </Link>
-            </div>
+          <div key={course.course_id} className="course-item">
+            <h2>{course.course_name}</h2>
+            <p>Преподаватель: {course.teacher_name}</p>
+            <Link to={`/course/${course.course_id}`}>Подробнее</Link>
           </div>
         ))}
-      </div> */}
+      </div>
     </div>
   );
-}
+};
 
 export default Courses;

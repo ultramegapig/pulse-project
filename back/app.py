@@ -291,7 +291,6 @@ def get_lecture():
     lecture_id = data.get('lecture_id')
     errors = []
 
-    # Проверка наличия lecture_id
     lecture = Lecture.query.filter_by(lecture_id=lecture_id).first()
     if not lecture:
         errors.append({
@@ -300,7 +299,6 @@ def get_lecture():
             "type": "id"
         })
 
-    # Если есть ошибки, возвращаем их
     if errors:
         return jsonify({
             "status": 400,
@@ -311,12 +309,16 @@ def get_lecture():
             }
         }), 400
 
+    teacher = User.query.filter_by(user_id=lecture.teacher_id).first()
+    teacher_name = f"{teacher.first_name} {teacher.last_name}" if teacher else "Unknown"
+
     return jsonify({
         'lecture_name': lecture.lecture_name,
         'course_id': lecture.course_id,
         'additional_materials': lecture.additional_materials,
         'lecture_datetime': lecture.lecture_datetime.isoformat(),
-        'lecture_link': lecture.lecture_link
+        'lecture_link': lecture.lecture_link,
+        'teacher_name': teacher_name
     }), 200
 
 
