@@ -1,30 +1,53 @@
-/* styles.css */
+/* barchart.scss */
+
 .bar-chart {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     height: 300px; /* Adjust height as needed */
+    padding: 1% 1% 7%;
+    background-color: white;
+    border-radius: 40px;
   }
   
   .bar {
-    background-color: #007bff; /* Blue color for bars, you can change it */
-    width: 30px; /* Adjust width as needed */
+    background-color: lightgray; /* Gray color for bars, you can change it */
+    width: 12%; /* Adjust width as needed */
     margin-right: 10px; /* Adjust spacing between bars */
     text-align: center;
     color: white; /* Text color */
+    position: relative; /* Ensure the value is positioned correctly */
+    border-radius: 30px 30px 3px 3px;
   }
-
-  .bar:last-child {
-    background-color: red;
+  
+  .current-day {
+    background-color: black; /* Highlight color for the current day */
+  }
+  
+  .underbar-info {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  
+  .underbar-info > div {
+    display: flex;
+    flex-direction: column;
+    transform: translateY(150%);
+  }
+  
+  .underbar-info > div > span {
+    color: black; /* Text color for underbar info */
   }
   
   .bar-label {
-    margin-top: 5px; /* Adjust spacing between label and bar */
-    font-size: 12px; /* Adjust font size as needed */
+    font-size: 20px; /* Font size for labels */
+    margin-bottom: 20px; /* Bottom margin for labels */
   }
   
-  /* Optional: Add hover effect */
-  .bar:hover {
-    background-color: #0056b3; /* Darker blue color on hover */
+  .bar-value {
+    margin-bottom: 5px; /* Bottom margin for values */
+    font-size: 12px; /* Font size for values */
   }
   
