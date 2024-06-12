@@ -12,7 +12,7 @@ from io import BytesIO
 from flask import Flask, jsonify, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-
+import re
 from models import db, User, Course, Lecture, Test, TestResult, Group, Metrics, generate_id
 
 app = Flask(__name__)
@@ -37,6 +37,11 @@ def is_valid_url(url):
     except ValueError:
         return False
 
+
+def extract_video_id(youtube_url):
+    pattern = r"v=([^&]+)"
+    match = re.search(pattern, youtube_url)
+    return match.group(1) if match else None
 
 # Регистрация                   [E]
 # Принимает: first_name, password, last_name, email, role, group_id
@@ -161,7 +166,6 @@ def add_lecture():
         return jsonify({'message': 'Permission denied'}), 403
 
     data = request.get_json()
-    
     errors = []
 
     lecture_link = data.get('lecture_link')
@@ -179,12 +183,20 @@ def add_lecture():
             "message": "Дата лекции не может быть в прошлом.",
             "type": "datetime"
         })
-    
+
     additional_materials = data.get('additional_materials')
     if not is_valid_url(additional_materials):
         errors.append({
             "name": "additional_materials",
             "message": "Некорректная ссылка на дополнительные материалы. Это должна быть ссылка.",
+            "type": "url"
+        })
+
+    video_id = extract_video_id(lecture_link)
+    if not video_id:
+        errors.append({
+            "name": "lecture_link",
+            "message": "Не удалось извлечь video_id из ссылки.",
             "type": "url"
         })
 
@@ -199,16 +211,18 @@ def add_lecture():
         }), 400
 
     new_lecture = Lecture(
-        lecture_id=generate_id(), 
-        lecture_name=data['lecture_name'], 
-        course_id=data['course_id'], 
-        additional_materials=additional_materials, 
-        lecture_datetime=lecture_datetime, 
-        lecture_link=lecture_link
+        lecture_id=generate_id(),
+        lecture_name=data['lecture_name'],
+        course_id=data['course_id'],
+        additional_materials=additional_materials,
+        lecture_datetime=lecture_datetime,
+        lecture_link=lecture_link,
+        video_id=video_id
     )
     db.session.add(new_lecture)
     db.session.commit()
     return jsonify({'message': 'Lecture added successfully'}), 201
+
 
 
 # Список доступных лекций       [T]
@@ -301,7 +315,7 @@ def get_lecture():
         'course_id': lecture.course_id,
         'additional_materials': lecture.additional_materials,
         'lecture_datetime': lecture.lecture_datetime.isoformat(),
-        'lecture_link': lecture.lecture_link,
+        'lecture_link': lecture.video_id,
         'teacher_name': teacher_name
     }), 200
 
@@ -317,7 +331,7 @@ def get_stream():
     lecture = Lecture.query.filter_by(lecture_id=lecture_id).first()
     
     if lecture:
-        return jsonify({'lecture_link': lecture.lecture_link}), 200
+        return jsonify({'lecture_link': lecture.lecture_link, 'video_id': lecture.video_id}), 200
     return jsonify({'message': 'Lecture not found'}), 404
 
 
@@ -672,7 +686,6 @@ def get_schedule():
     if not user:
         return jsonify({'message': 'User not found'}), 404
 
-    # Для студентов
     if user.role == 'Студент':
         group_id = user.group_id
         courses = Course.query.filter_by(group_id=group_id).all()
@@ -708,7 +721,6 @@ def get_schedule():
                     
         return jsonify({'schedule': schedule}), 200
 
-    # Для преподавателей
     elif user.role == 'Преподаватель':
         courses = Course.query.filter_by(teacher_id=user.user_id).all()
         
@@ -803,7 +815,6 @@ def engagement_index():
             }
         }), 400
     
-    # Получение всех метрик по лекции
     metrics = Metrics.query.filter_by(lecture_id=lecture_id).all()
     
     if not metrics:
@@ -813,7 +824,6 @@ def engagement_index():
             "code": "Not Found"
         }), 404
     
-    # Инициализация переменных
     total_watch_time = 0
     total_pause = 0
     total_tab_hidden = 0
@@ -821,7 +831,6 @@ def engagement_index():
     total_mute = 0
     total_unmute = 0
     
-    # Обработка метрик
     for metric in metrics:
         if metric.action == 'video_time':
             total_watch_time = max(total_watch_time, int(metric.value))
@@ -836,29 +845,23 @@ def engagement_index():
         elif metric.action == 'unmute':
             total_unmute += int(metric.value)
     
-    # Расчёт средней длины просмотра видео
     average_watch_time = total_watch_time / 60
     
-    # Общая длина видео в минутах
     video_length = 60
     
-    # Переменные для метрик
-    Vp = average_watch_time / video_length  # Процент просмотренного видео
-    P = total_pause  # Количество пауз
-    Ts = total_tab_hidden - total_tab_visible  # Количество переключений вкладок
-    Tm = total_mute - total_unmute  # Количество выключений звука
+    Vp = average_watch_time / video_length
+    P = total_pause
+    Ts = total_tab_hidden - total_tab_visible
+    Tm = total_mute - total_unmute
     
-    # Весовые коэффициенты
     w1 = 0.4
     w2 = 0.2
     w3 = 0.2
     w4 = 0.2
     
-    # Расчёт индекса вовлеченности
     EI = w1 * Vp - w2 * (P / video_length) - w3 * (Ts / video_length) + w4 * (Tm / video_length)
     EI = round(EI * 100, 2)
     
-    # Сообщения в зависимости от уровня вовлеченности
     if EI <= 35:
         message = "Низкий уровень вовлеченности. Рассмотрите возможность улучшения контента."
     elif EI <= 50:
