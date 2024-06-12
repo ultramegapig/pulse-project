@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import '../styles/tests.scss';
+import '../styles/courseTestsBlock.scss';
 import '../styles/all.scss';
+
 
 interface TestShortCardProps {
   testName: string;

@@ -134,7 +134,7 @@ const AppContent: React.FC = () => {
 const App: React.FC = () => {
   return (
     <div className="App">
-       <BarChart/>
+       <Tests/>
     </div>
   );
 };

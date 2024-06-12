@@ -28,7 +28,7 @@ const coursesData = [
         deadline: '2024-08-01T12:00:00'
       }
     ]
-  },
+  }, 
   {
     title: 'Курс 2',
     testCardsData: [
@@ -73,10 +73,11 @@ const Tests: React.FC = () => {
         </div>
 
         <TestsStat completedResult={30} bestdResult={10} worstdResult={100}/>
-        </div>
+      </div>
 
     </div>
   );
 }
 
 export default Tests;
+ 

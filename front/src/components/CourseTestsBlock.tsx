@@ -3,6 +3,7 @@ import TestShortCard from './TestShortCard';
 import '../styles/all.scss';
 import ArrowRight from '../images/arrow-right.svg';
 import '../styles/courseTestsBlock.scss';
+import '../styles/tests.scss';
 
 // Определяем тип данных для карточки теста
 interface TestCardData {
