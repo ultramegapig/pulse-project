@@ -1,14 +1,15 @@
 import React, { useState, useContext, FormEvent } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import '../styles/all.scss';
+import { Link } from 'react-router-dom'; // Импортируем Link
+import '../styles/login.scss';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [otp, setOtp] = useState<string>('');
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
-  const [isOtpRequired, setIsOtpRequired] = useState<boolean>(false);
   const { setAuthState } = useContext(AuthContext);
 
   const handleLogin = async (e: FormEvent) => {
@@ -39,10 +40,10 @@ const Login: React.FC = () => {
   return (
     <div className='login'>
       <div className="login-container">
-        <h2>Login</h2>
+        <h2>Вход</h2>
         <form onSubmit={handleLogin}>
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">E-mail</label>
             <input
               type="email"
               id="email"
@@ -53,7 +54,7 @@ const Login: React.FC = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Пароль</label>
             <input
               type="password"
               id="password"
@@ -63,21 +64,35 @@ const Login: React.FC = () => {
               required
             />
           </div>
-          {/* Include OTP field if required */}
-         
-            <div className="form-group">
-              <label htmlFor="otp">OTP</label>
+          <div className="remember-forgot-container">
+            <div className="remember-me">
               <input
-                type="text"
-                id="otp"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                placeholder="Enter OTP"
-                required
+                type="checkbox"
+                id="rememberMe"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
               />
+              <label htmlFor="rememberMe">Запомнить меня</label>
             </div>
-          <button type="submit">Login</button>
+            <a href="#" className="forgot-password">Забыли пароль?</a>
+          </div>
+          <div className="form-group otp">
+            <input
+              type="text"
+              id="otp"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              placeholder="Введите OTP ключ"
+              required
+            />
+            <p>*Введите OTP ключ из приложения Google Authenticator</p>
+          </div>
+          <button type="submit">Войти</button>
         </form>
+        <div className='form-registration'>
+          <p>Ещё нет аккаунта?</p>
+          <Link to="/register" className="register-link">Зарегистрируйтесь</Link>
+        </div>
         {message && <p>{message}</p>}
       </div>
     </div>

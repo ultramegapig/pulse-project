@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import QRCode from 'qrcode.react'; // Import QRCode library
 import '../styles/register.scss';
+import { Link } from "react-router-dom";
 
 interface Group {
   group_id: string;
@@ -69,7 +69,6 @@ const Register: React.FC = () => {
     <div className="register">
       <div className="register-content">
         <h2>Регистрация</h2>
-       
         <form onSubmit={handleRegister}>
           <div className="register-content-form-row">
             <div className="register-content-form-group">
@@ -106,7 +105,7 @@ const Register: React.FC = () => {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Укажите имя"
-              required
+                required
               />
             </div>
             <div className="register-content-form-group">
@@ -117,11 +116,11 @@ const Register: React.FC = () => {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Укажите фамилию"
-              required
+                required
               />
             </div>
           </div>
-          <div >
+          <div>
             <div className="register-content-form-group">
               <label htmlFor="email">E-mail</label>
               <input
@@ -130,7 +129,7 @@ const Register: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Введите электронную почту"
-              required
+                required
               />
             </div>
           </div>
@@ -143,7 +142,7 @@ const Register: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Придумайте пароль"
-              required
+                required
               />
             </div>
             <div className="register-content-form-group">
@@ -154,7 +153,7 @@ const Register: React.FC = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Повторите пароль"
-              required
+                required
               />
             </div>
           </div>
@@ -169,7 +168,7 @@ const Register: React.FC = () => {
         )}
         {message && <p>{message}</p>}
 
-        <a href="/login">уже есть аккаунт?</a>
+        <Link to="/login">Уже есть аккаунт?</Link> {/* Добавляем ссылку на логин */}
       </div>
     </div>
   );
