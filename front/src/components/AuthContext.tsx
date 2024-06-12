@@ -35,11 +35,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   });
 
   useEffect(() => {
-    if (authState.token && authState.user) {
+    if (authState.token) {
       localStorage.setItem('accessToken', authState.token);
-      localStorage.setItem('user', JSON.stringify(authState.user));
     } else {
       localStorage.removeItem('accessToken');
+    }
+    if (authState.user) {
+      localStorage.setItem('user', JSON.stringify(authState.user));
+    } else {
       localStorage.removeItem('user');
     }
   }, [authState]);

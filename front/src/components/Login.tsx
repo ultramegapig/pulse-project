@@ -1,7 +1,7 @@
 import React, { useState, useContext, FormEvent } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom'; // Импортируем useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/login.scss';
 
 const Login: React.FC = () => {
@@ -11,7 +11,7 @@ const Login: React.FC = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
   const { setAuthState } = useContext(AuthContext);
-  const navigate = useNavigate(); // Используем useNavigate
+  const navigate = useNavigate();
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -23,15 +23,25 @@ const Login: React.FC = () => {
       });
 
       const { access_token } = response.data;
+      const decodedToken = JSON.parse(atob(access_token.split('.')[1]));
+      const user = {
+        user_id: decodedToken.sub.user_id,
+        first_name: decodedToken.sub.first_name,
+        last_name: decodedToken.sub.last_name,
+        email: decodedToken.sub.email,
+        role: decodedToken.sub.role,
+        group_id: decodedToken.sub.group_id
+      };
 
       localStorage.setItem('accessToken', access_token);
+      localStorage.setItem('user', JSON.stringify(user));
       setAuthState({
         isAuthenticated: true,
         token: access_token,
-        user: null,
+        user: user,
       });
       setMessage('Login successful!');
-      navigate('/'); // Перенаправление на главную страницу
+      navigate('/');
     } catch (error: any) {
       const errorMsg = error.response?.data?.message || 'Неправильный логин и/или пароль.';
       setMessage(errorMsg);
