@@ -17,7 +17,7 @@ from models import db, User, Course, Lecture, Test, TestResult, Group, Metrics, 
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///online_lectureshui.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///online_lectures.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=1)
@@ -779,6 +779,105 @@ def gather_metrics():
     db.session.commit()
 
     return jsonify({'message': 'success'}), 201
+
+
+@app.route('/api/metrics/engagement_index', methods=['POST'])
+@jwt_required()
+def engagement_index():
+    data = request.get_json()
+    lecture_id = data.get('lecture_id')
+    
+    if not lecture_id:
+        return jsonify({
+            "status": 400,
+            "message": "Lecture ID is required",
+            "code": "Bad Request",
+            "details": {
+                "createErrors": [
+                    {
+                        "name": "lecture_id",
+                        "message": "Lecture ID is missing",
+                        "type": "validation"
+                    }
+                ]
+            }
+        }), 400
+    
+    # Получение всех метрик по лекции
+    metrics = Metrics.query.filter_by(lecture_id=lecture_id).all()
+    
+    if not metrics:
+        return jsonify({
+            "status": 404,
+            "message": "No metrics found for the given lecture",
+            "code": "Not Found"
+        }), 404
+    
+    # Инициализация переменных
+    total_watch_time = 0
+    total_pause = 0
+    total_tab_hidden = 0
+    total_tab_visible = 0
+    total_mute = 0
+    total_unmute = 0
+    
+    # Обработка метрик
+    for metric in metrics:
+        if metric.action == 'video_time':
+            total_watch_time = max(total_watch_time, int(metric.value))
+        elif metric.action == 'pause':
+            total_pause += int(metric.value)
+        elif metric.action == 'tab_hidden':
+            total_tab_hidden += int(metric.value)
+        elif metric.action == 'tab_visible':
+            total_tab_visible += int(metric.value)
+        elif metric.action == 'mute':
+            total_mute += int(metric.value)
+        elif metric.action == 'unmute':
+            total_unmute += int(metric.value)
+    
+    # Расчёт средней длины просмотра видео
+    average_watch_time = total_watch_time / 60
+    
+    # Общая длина видео в минутах
+    video_length = 60
+    
+    # Переменные для метрик
+    Vp = average_watch_time / video_length  # Процент просмотренного видео
+    P = total_pause  # Количество пауз
+    Ts = total_tab_hidden - total_tab_visible  # Количество переключений вкладок
+    Tm = total_mute - total_unmute  # Количество выключений звука
+    
+    # Весовые коэффициенты
+    w1 = 0.4
+    w2 = 0.2
+    w3 = 0.2
+    w4 = 0.2
+    
+    # Расчёт индекса вовлеченности
+    EI = w1 * Vp - w2 * (P / video_length) - w3 * (Ts / video_length) + w4 * (Tm / video_length)
+    EI = round(EI * 100, 2)
+    
+    # Сообщения в зависимости от уровня вовлеченности
+    if EI <= 35:
+        message = "Низкий уровень вовлеченности. Рассмотрите возможность улучшения контента."
+    elif EI <= 50:
+        message = "Средний уровень вовлеченности. Есть пространство для улучшений."
+    elif EI <= 75:
+        message = "Хороший уровень вовлеченности. Лекция заинтересовала аудиторию."
+    else:
+        message = "Отличный уровень вовлеченности. Лекция прекрасно вовлекает аудиторию!"
+    
+    return jsonify({
+        "total_pause": total_pause,
+        "average_watch_time": round(average_watch_time, 2),
+        "total_tab_switch": total_tab_hidden + total_tab_visible,
+        "total_mute": total_mute + total_unmute,
+        "engagement_index": f"{EI}%",
+        "message": message
+    }), 200
+
+
 
 
 if __name__ == '__main__':

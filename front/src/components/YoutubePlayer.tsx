@@ -40,6 +40,14 @@ const YouTubePlayer: React.FC = () => {
     }
   };
 
+  const getCurrentTimeInSeconds = () => {
+    if (playerInstanceRef.current) {
+      const currentTime = playerInstanceRef.current.getCurrentTime();
+      return Math.floor(currentTime);
+    }
+    return 0;
+  };
+
   useEffect(() => {
     const loadYouTubeIframeAPI = () => {
       const script = document.createElement('script');
@@ -51,7 +59,9 @@ const YouTubePlayer: React.FC = () => {
     const handlePlayerStateChange = (event: any) => {
       console.log('Player state changed:', event.data);
       if (event.data === window.YT.PlayerState.PAUSED) {
+        const currentTime = getCurrentTimeInSeconds();
         sendMetric('pause', '1');
+        sendMetric('video_time', currentTime.toString());
       } else if (event.data === window.YT.PlayerState.PLAYING) {
         sendMetric('play', '1');
       }
