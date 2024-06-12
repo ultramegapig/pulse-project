@@ -68,6 +68,7 @@ class Lecture(db.Model):
     additional_materials = db.Column(db.Text, nullable=True)
     lecture_datetime = db.Column(db.DateTime, nullable=False)
     lecture_link = db.Column(db.String(255), nullable=True)
+    video_id = db.Column(db.String(255))
 
     def to_json(self):
         return {
@@ -76,7 +77,8 @@ class Lecture(db.Model):
             'course_id': self.course_id,
             'additional_materials': self.additional_materials,
             'lecture_datetime': self.lecture_datetime.isoformat(),
-            'lecture_link': self.lecture_link
+            'lecture_link': self.lecture_link,
+            'video_id': self.video_id
         }
 
 # Модель Теста
