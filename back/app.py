@@ -81,7 +81,7 @@ def login():
     if not user or not check_password_hash(user.password_hash, data['password']):
         return jsonify({
             "status": 400, 
-            "message": "Invalid credentials", 
+            "message": "Неправильный логин и/или пароль.", 
             "code": "Invalid credentials"
         }), 400
 
@@ -91,13 +91,13 @@ def login():
         if not totp.verify(otp_provided):
             return jsonify({
                 "status": 400,
-                "message": "Incorrect OTP",
+                "message": "Неправильный одноразовый код.",
                 "code": "Incorrect OTP"
             }), 400
     elif user.otp_secret:
         return jsonify({
             "status": 400,
-            "message": "2FA required",
+            "message": "Введите одноразовый код.",
             "code": "2FA required"
         }), 400
 

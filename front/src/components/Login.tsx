@@ -18,21 +18,20 @@ const Login: React.FC = () => {
       const response = await axios.post<{ access_token: string }>('http://localhost:5000/api/user/login', {
         email,
         password,
-        otp, // Include OTP field in the request body
+        otp,
       });
 
       const { access_token } = response.data;
 
       localStorage.setItem('accessToken', access_token);
-      // Assuming your AuthContext provides a function setAuthenticated() to update the authentication state
       setAuthState({
         isAuthenticated: true,
         token: access_token,
-        user: null, // Update this value as needed based on your AuthContext
+        user: null,
       });
       setMessage('Login successful!');
     } catch (error: any) {
-      const errorMsg = error.response?.data?.message || 'Login failed. Please check your credentials and try again.';
+      const errorMsg = error.response?.data?.message || 'Неправильный логин и/или пароль.';
       setMessage(errorMsg);
     }
   };
@@ -49,7 +48,7 @@ const Login: React.FC = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter email"
+              placeholder="Почта"
               required
             />
           </div>
@@ -60,7 +59,7 @@ const Login: React.FC = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
+              placeholder="Пароль"
               required
             />
           </div>
@@ -82,18 +81,18 @@ const Login: React.FC = () => {
               id="otp"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
-              placeholder="Введите OTP ключ"
+              placeholder="Одноразовый код"
               required
             />
-            <p>*Введите OTP ключ из приложения Google Authenticator</p>
+            <p>*Введите одноразовый код из приложения Google Authenticator</p>
           </div>
+          {message && <p>{message}</p>}
           <button type="submit">Войти</button>
         </form>
         <div className='form-registration'>
           <p>Ещё нет аккаунта?</p>
           <Link to="/register" className="register-link">Зарегистрируйтесь</Link>
         </div>
-        {message && <p>{message}</p>}
       </div>
     </div>
   );
