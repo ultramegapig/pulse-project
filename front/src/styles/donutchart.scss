@@ -1,0 +1,49 @@
+// DonutChart.scss
+$heightandwidht: 300px;
+.donut-chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    padding: 40px 70px ;
+    position: relative;
+    width: $heightandwidht; /* Adjust width as needed */
+    height: $heightandwidht; /* Adjust height as needed */
+  }
+
+  .donut-chart-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  // Custom styles for the legend
+  .donut-chart-legend {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .donut-chart-legend-item {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    border-radius: 10pt;
+    box-decoration-break: none;
+  }
+  
+  .donut-chart-legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+  
+  // Add more custom styles as needed
+  

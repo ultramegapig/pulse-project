@@ -19,6 +19,12 @@ import Login from './components/Login';
 import Register from './areas/Register';
 import CourseDescriptionPage from './areas/CourseDescriptionPage';
 
+import Cat from './images/cat.jpg'
+
+import BarChart from './components/Barchart';
+import DonutChart from './components/Donutchart';
+
+
 // Lazy load components
 const MainPage = lazy(() => import('./areas/MainPage'));
 const Table = lazy(() => import('./areas/Table'));
@@ -85,7 +91,7 @@ const AppContent: React.FC = () => {
         <div className="logo">logo</div>
         <div className="rightHeader">
           <div className="notifications">notification</div>
-          <div className="userStuff">user</div>
+          <div className="userStuff"><img src={Cat} alt=''/></div>
         </div>
       </header>
 
@@ -124,14 +130,21 @@ const AppContent: React.FC = () => {
   );
 };
 
+const chartData = [
+  { label: 'A', value: 30 }, // representing 30%
+  { label: 'B', value: 100 }, // representing 50%
+  { label: 'C', value: 20 }, // representing 20%
+  // Add more data objects as needed
+];
+
+let successPercentage = 75
 // Root app component
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <AppContent/>
-      </Router>
-    </AuthProvider>
+    <div className="App">
+      <BarChart data={chartData} />
+      <DonutChart successPercentage={successPercentage} />
+    </div>
   );
 };
 
