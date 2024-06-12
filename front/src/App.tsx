@@ -12,12 +12,19 @@ import ActiveTestsIcon from './images/activeTestsIcon.svg';
 import ActiveStatisticIcon from './images/activeStatisticIcon.svg';
 import YouTubePlayer from './components/YoutubePlayer';
 import React, { useState, lazy, Suspense, useContext, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { AuthContext, AuthProvider } from './context/AuthContext';
 import './styles/sideBar.scss';
 import Login from './components/Login';
 import Register from './areas/Register';
 
+import CourseDescriptionPage from './areas/CourseDescriptionPage';
+
+import BarChart from './components/Barchart';
+import DonutChart from './components/Donutchart';
+
+
+// Lazy load components
 const MainPage = lazy(() => import('./areas/MainPage'));
 const Table = lazy(() => import('./areas/Table'));
 const Courses = lazy(() => import('./areas/Courses'));
@@ -27,6 +34,7 @@ const Numbers = lazy(() => import('./areas/Numbers'));
 const Podrobnosti = lazy(() => import('./areas/Podrobnosti'));
 const CourseDescriptionPage = lazy(() => import('./areas/CourseDescriptionPage'));
 
+// Module configuration
 interface Module {
   path: string;
   component: React.LazyExoticComponent<React.ComponentType<any>>;
@@ -43,6 +51,7 @@ const modules: { [key: number]: Module } = {
   5: { path: '/progress', component: Progress, label: 'Успеваемость', icon: StatisticIcon, activeIcon: ActiveStatisticIcon }
 };
 
+// App content component
 const AppContent: React.FC = () => {
   const { authState, setAuthState } = useContext(AuthContext);
   const [activeLink, setActiveLink] = useState<number | null>(() => {
@@ -62,6 +71,15 @@ const AppContent: React.FC = () => {
     }
   }, [setAuthState]);
 
+  if (!authState.isAuthenticated) {
+    return (
+      <Routes>
+        <Route path="/*" element={<Login/>}/>
+        <Route path='/register' element={<Register/>}/>
+      </Routes>
+    );
+  }
+
   const handleLinkClick = (key: number) => {
     setActiveLink(key);
     localStorage.setItem('activeLink', key.toString());
@@ -79,7 +97,7 @@ const AppContent: React.FC = () => {
 
       <div className="mainArea">
         <div className="sideBar">
-        {Object.keys(modules).map((key) => (
+          {Object.keys(modules).map((key) => (
             <Link
               key={key}
               onClick={() => handleLinkClick(parseInt(key))}
@@ -91,7 +109,7 @@ const AppContent: React.FC = () => {
                 src={activeLink === parseInt(key) ? modules[parseInt(key)].activeIcon : modules[parseInt(key)].icon}
                 alt=""
               />
-              <div className='sideBar-text'>{modules[parseInt(key)].label}</div>
+              <div className="sideBar-text">{modules[parseInt(key)].label}</div>
             </Link>
           ))}
         </div>
@@ -102,26 +120,23 @@ const AppContent: React.FC = () => {
               {Object.keys(modules).map((key) => (
                 <Route key={key} path={modules[parseInt(key)].path} element={React.createElement(modules[parseInt(key)].component)} />
               ))}
-              <Route path="/course_info/:course_id" element={<CourseDescriptionPage />} />
+              <Route path="/courses" element={<Courses />} />
+              <Route path="/course/:id" element={<CourseDescriptionPage />} />
             </Routes>
           </Suspense>
         </div>
       </div>
     </div>
   );
-}
+};
 
+
+// Root app component
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="*" element={<AppContent />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <div className="App">
+       <Tests/>
+    </div>
   );
 };
 
