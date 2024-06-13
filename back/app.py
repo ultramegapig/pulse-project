@@ -221,7 +221,7 @@ def add_lecture():
     )
     db.session.add(new_lecture)
     db.session.commit()
-    return jsonify({'message': 'Lecture added successfully'}), 201
+    return jsonify({'message': 'Lecture added successfully', "lecture_id": new_lecture.lecture_id}), 201
 
 
 
@@ -294,7 +294,6 @@ def get_course_lectures():
 # Принимает: lecture_id
 # Отдаёт: lecture_id, lecture_name, course_id, additional_materials, lecture_datetime, lecture_link
 @app.route('/api/lectures/get', methods=['POST'])
-@jwt_required()
 def get_lecture():
     data = request.get_json()
     lecture_id = data.get('lecture_id')
@@ -318,16 +317,16 @@ def get_lecture():
             }
         }), 400
 
-    teacher = User.query.filter_by(user_id=lecture.teacher_id).first()
-    teacher_name = f"{teacher.first_name} {teacher.last_name}" if teacher else "Unknown"
+    # teacher = User.query.filter_by(user_id=lecture.teacher_id).first()
+    # teacher_name = f"{teacher.first_name} {teacher.last_name}" if teacher else "Unknown"
 
     return jsonify({
         'lecture_name': lecture.lecture_name,
         'course_id': lecture.course_id,
         'additional_materials': lecture.additional_materials,
         'lecture_datetime': lecture.lecture_datetime.isoformat(),
-        'lecture_link': lecture.video_id,
-        'teacher_name': teacher_name
+        'lecture_link': lecture.video_id
+        # 'teacher_name': teacher_name
     }), 200
 
 
@@ -356,8 +355,8 @@ def get_lectures():
     past_lectures = Lecture.query.filter(Lecture.lecture_datetime < omsk_time).all()
     upcoming_lectures = Lecture.query.filter(Lecture.lecture_datetime >= omsk_time).all()
 
-    past_lecture_list = [{'lecture_id': lecture.lecture_id, 'lecture_name': lecture.lecture_name, 'course_id': lecture.course_id, 'additional_materials': lecture.additional_materials, 'lecture_datetime': lecture.lecture_datetime.isoformat(), 'lecture_link': lecture.lecture_link} for lecture in past_lectures]
-    upcoming_lecture_list = [{'lecture_id': lecture.lecture_id, 'lecture_name': lecture.lecture_name, 'course_id': lecture.course_id, 'additional_materials': lecture.additional_materials, 'lecture_datetime': lecture.lecture_datetime.isoformat(), 'lecture_link': lecture.lecture_link} for lecture in upcoming_lectures]
+    past_lecture_list = [{'video_id': lecture.video_id, 'lecture_id': lecture.lecture_id, 'lecture_name': lecture.lecture_name, 'course_id': lecture.course_id, 'additional_materials': lecture.additional_materials, 'lecture_datetime': lecture.lecture_datetime.isoformat(), 'lecture_link': lecture.lecture_link} for lecture in past_lectures]
+    upcoming_lecture_list = [{'video_id': lecture.video_id, 'lecture_id': lecture.lecture_id, 'lecture_name': lecture.lecture_name, 'course_id': lecture.course_id, 'additional_materials': lecture.additional_materials, 'lecture_datetime': lecture.lecture_datetime.isoformat(), 'lecture_link': lecture.lecture_link} for lecture in upcoming_lectures]
 
     return jsonify({
         'past_lectures': past_lecture_list,

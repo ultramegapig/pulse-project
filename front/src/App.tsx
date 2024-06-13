@@ -82,7 +82,7 @@ const AppContent: React.FC = () => {
     setActiveLink(key);
     localStorage.setItem('activeLink', key.toString());
   };
-
+  
   return (
     <div className="App">
       <header className="header">
@@ -120,6 +120,8 @@ const AppContent: React.FC = () => {
               ))}
               <Route path="/courses" element={<Courses />} />
               <Route path="/course/:course_id" element={<CourseDescriptionPage />} />
+              <Route path="/video/:video_id" element={<YouTubePlayer/>} />
+
             </Routes>
           </Suspense>
         </div>
@@ -132,10 +134,8 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <Routes>
-          <Route path="/video" element={<YouTubePlayer videoId={'kGyfI0PK1VE'} />} />
-          <Route path="/" element={<AppContent />} />
-        </Routes>
+        <AppContent/>
+        
       </Router>
     </AuthProvider>
   );
