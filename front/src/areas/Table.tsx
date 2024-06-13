@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react'; // Import useContext, useState, useEffect
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/podrobnosti.scss';
+import YouTubePlayer from '../components/YoutubePlayer';
+import { Link } from 'react-router-dom';
 
 interface Lecture {
   lecture_name: string;
   lecture_datetime: string;
-  lecture_link: string;
+  video_id: string; // Assuming this is the YouTube video ID
   additional_materials: string;
 }
 
@@ -14,7 +16,7 @@ interface BlockOfLessonProps {
   lecture: Lecture;
 }
 
-function BlockOfLesson({ lecture }: BlockOfLessonProps) {
+const BlockOfLesson: React.FC<BlockOfLessonProps> = ({ lecture }) => {
   return (
     <div className="blockoflesson">
       <div className="kek">
@@ -23,15 +25,20 @@ function BlockOfLesson({ lecture }: BlockOfLessonProps) {
       </div>
       <div className="lecturelinks">
         <div>
-          <a href={lecture.lecture_link} target="_blank" rel="noopener noreferrer">Lecture Link</a>
+          {/* Use Link component to navigate to another page */}
+          <Link to={`/video/${lecture.video_id}`}>
+            <span>ссылка на лекцию</span>
+          </Link>
         </div>
         <div>
-          <a href={lecture.additional_materials} target="_blank" rel="noopener noreferrer">Additional Materials</a>
+          <a href={lecture.additional_materials} target="_blank" rel="noopener noreferrer">дополнительные материалы</a>
         </div>
       </div>
     </div>
   );
-}
+};
+
+
 
 function Table() {
   const { authState } = useContext(AuthContext);

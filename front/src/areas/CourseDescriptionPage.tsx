@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import "../styles/courseDescriptionPage.scss";
 import GnomIcon from "../images/gnomIcon.svg";
 import ArrowLeft from "../images/arrow-left.svg";
-import { AuthContext } from '../context/AuthContext'; // Замените на правильный путь
+import { AuthContext } from '../context/AuthContext'; 
 
 interface CourseDescriptionPageDieProps {
   lectureName: string;
@@ -44,6 +44,7 @@ const CourseDescriptionPage: React.FC = () => {
           { course_id: course_id },
           {
             headers: {
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${authState.token}`,
             },
           }
@@ -73,12 +74,15 @@ const CourseDescriptionPage: React.FC = () => {
     ));
   };
 
+
   return (
     <div className="courseDescriptionPage">
+      <Link to={`/courses`}>
       <div className="courseDescriptionPage-title">
         <img src={ArrowLeft} alt="" />
         <h1>{courseName}</h1>
       </div>
+      </Link>
       <div className="courseDescriptionPage-underTitle">
         <div className="courseDescriptionPage-underTitle-lectureCount">
           <img src={GnomIcon} alt="" />

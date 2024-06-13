@@ -2,15 +2,32 @@ import React, { useContext, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { AuthContext } from '../context/AuthContext';
+import { useParams } from 'react-router-dom';
 
 declare global {
   interface Window {
-    YT: any;
+    YT: {
+      Player: any; // Adjust the type as per your YT.Player type
+      PlayerState: {
+        PAUSED: number;
+        PLAYING: number;
+        // Add other states as necessary
+      };
+    };
     onYouTubeIframeAPIReady: () => void;
   }
 }
 
+interface Lecture {
+  video_id: string;
+}
+
+interface YouTubePlayerProps {
+  videoId: string;
+}
+
 const YouTubePlayer: React.FC = () => {
+  const { video_id } = useParams<{ video_id: string }>();
   const { authState } = useContext(AuthContext);
   const playerRef = useRef<HTMLDivElement | null>(null);
   const playerInstanceRef = useRef<any>(null);
@@ -40,14 +57,6 @@ const YouTubePlayer: React.FC = () => {
     }
   };
 
-  const getCurrentTimeInSeconds = () => {
-    if (playerInstanceRef.current) {
-      const currentTime = playerInstanceRef.current.getCurrentTime();
-      return Math.floor(currentTime);
-    }
-    return 0;
-  };
-
   useEffect(() => {
     const loadYouTubeIframeAPI = () => {
       const script = document.createElement('script');
@@ -59,9 +68,7 @@ const YouTubePlayer: React.FC = () => {
     const handlePlayerStateChange = (event: any) => {
       console.log('Player state changed:', event.data);
       if (event.data === window.YT.PlayerState.PAUSED) {
-        const currentTime = getCurrentTimeInSeconds();
         sendMetric('pause', '1');
-        sendMetric('video_time', currentTime.toString());
       } else if (event.data === window.YT.PlayerState.PLAYING) {
         sendMetric('play', '1');
       }
@@ -85,8 +92,8 @@ const YouTubePlayer: React.FC = () => {
 
     window.onYouTubeIframeAPIReady = () => {
       console.log('YouTube IFrame API ready');
-      playerInstanceRef.current = new window.YT.Player(playerRef.current, {
-        videoId: 'X47OO8rT9wc',
+      playerInstanceRef.current = new window.YT.Player(playerRef.current!, {
+        videoId: video_id,
         events: {
           onStateChange: handlePlayerStateChange,
           onVolumeChange: handlePlayerVolumeChange
@@ -109,7 +116,7 @@ const YouTubePlayer: React.FC = () => {
       }
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [authState.token]);
+  }, [authState.token, video_id]);
 
   return (
     <div className='video-container'>
